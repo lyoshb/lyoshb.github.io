@@ -56,15 +56,10 @@
       --nl-placeholder: #636366;
     }
 
-    html {
-      height: 100%;
-      background: #ffffff;
-    }
-    body {
+    html, body {
       font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-      min-height: 100%; overflow-x: hidden;
+      min-height: 100vh; overflow-x: hidden;
       background: #ffffff; color: #1d1d1f;
-      padding-bottom: env(safe-area-inset-bottom);
     }
     #app {
       min-height: 100vh; background: var(--bg); color: var(--text);
@@ -438,6 +433,7 @@
         </div>
       </div>
     </main>
+    <div style="height: calc(64px + env(safe-area-inset-bottom));"></div>
     <footer id="footer">© 2026 Alex Balabanov</footer>
   </div>
 </div>
