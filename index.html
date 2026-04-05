@@ -57,19 +57,14 @@
     }
 
     html {
-      overflow: hidden;
-      height: 100%;
+      overflow-x: hidden;
       background: #ffffff;
-      overscroll-behavior: none;
       -webkit-text-size-adjust: 100%;
     }
     body {
       font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-      min-height: 100%; height: 100%;
-      overflow-x: hidden; overflow-y: auto;
-      overscroll-behavior-y: none;
+      min-height: 100vh; overflow-x: hidden;
       background: #ffffff; color: #1d1d1f;
-      -webkit-overflow-scrolling: touch;
     }
     #app {
       min-height: 100vh; background: var(--bg); color: var(--text);
