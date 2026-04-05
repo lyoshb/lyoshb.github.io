@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <meta name="robots" content="index, follow" />
@@ -624,11 +624,12 @@
 
   /* ===== THEME ===== */
   function syncBodyBg() {
-    const bg = dark ? '#000000' : '#ffffff';
+    const app = document.getElementById('app');
+    const bg = getComputedStyle(app).backgroundColor;
     document.documentElement.style.background = bg;
     document.body.style.background = bg;
     const meta = document.getElementById('theme-color-meta');
-    if (meta) meta.setAttribute('content', bg);
+    if (meta) meta.setAttribute('content', dark ? '#000000' : '#ffffff');
   }
   function applyTheme(isDark) {
     dark = isDark;
