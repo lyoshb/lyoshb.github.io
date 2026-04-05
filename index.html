@@ -67,6 +67,9 @@
       min-height: 100vh; overflow-x: hidden;
       background: #ffffff; color: #1d1d1f;
     }
+    @media (prefers-color-scheme: dark) {
+      html, body { background: #000000; color: #f5f5f7; }
+    }
     #app {
       min-height: 100vh; background: var(--bg); color: var(--text);
       transition: background 0.3s, color 0.3s; position: relative;
@@ -353,6 +356,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link rel="icon" type="image/png" href="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABQAFADASIAAhEBAxEB/8QAGwABAAIDAQEAAAAAAAAAAAAAAAQGAQUHAgj/xAAwEAABBAEDAQYFAwUAAAAAAAABAAIDBAUGBxEhEhMUFzFBQlJXldIyUVMVFjRidf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD7LREQEREBERAREQEREBERAREQEUPGZTGZTxH9NyNO74aZ1efw87ZO6lb+qN3ZJ7Lhz1B6hTEBFEv5TGY+epXv5GpUmuS9zVjmmax08nHPYYCeXO49hyVLQEREBERAVL3XzuQo4ynp7T0oj1HqCY0sc/jnww45mtEfLFHy79i7sN+JWebL4qJr3S5KlGGAlxdOwBvHrz16Ln22V6lqTOZDcrIXK7G34/B4GKSVoMGNa7kScE9HTvHen37AhB6tKCLYweO2nz2BzOFhFXTdiCDBZlvyEHs1Ljz7u7x5jkeepEzXH9C6vz05Wmz/APbudwd7C5SxRs0b0D69iJ07eHse0hw9enQ+q48/VeQyeCj2ds5pp1KbLsdkckJ2hxxLWhxvB3PR8sLmRA+0z3fIUG8oabpbtPz2qcsZBjLMT8ZpmVh4fXgjkDnXoj7SSTsa9jvkhiPxFXLa3UV3O4GWpnGxxaiw85x+YiYOG9+wAiVo/jlYWSt/1eB6grc46zgsdj6+Po2aFerWibDBDHMwNjY0ANaBz0AAAVD17kaGktYUdw6l+qMfK2PG6jjbM3/HLz3FrjnqYZHkOP8AHK8/AEHUEWGkOAIPIKygIiIKnLtntxLI+SXQGlHveS5znYeuS4n1JPYXnyw21+nukvs1f8FbkQVHyv21+nukvs1f8E8sNteOPL3SfH/Gr/grciCo+V+2v090l9mr/gg2w21Hpt7pL7NX/BW5EGGMbGxrGNDWtHDWgcAD9llEQEREBERAREQEREBERB//2Q==">
   <meta name="theme-color" id="theme-color-meta" content="#ffffff" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 </head>
 <body>
 
@@ -633,12 +637,11 @@
 
   /* ===== THEME ===== */
   function syncBodyBg() {
-    const app = document.getElementById('app');
-    const bg = getComputedStyle(app).backgroundColor;
+    const bg = dark ? '#000000' : '#ffffff';
     document.documentElement.style.background = bg;
     document.body.style.background = bg;
     const meta = document.getElementById('theme-color-meta');
-    if (meta) meta.setAttribute('content', dark ? '#000000' : '#ffffff');
+    if (meta) meta.setAttribute('content', bg);
   }
   function applyTheme(isDark) {
     dark = isDark;
