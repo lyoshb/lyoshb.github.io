@@ -59,16 +59,14 @@
 
     html {
       overflow-x: hidden;
-      background: #ffffff;
+      background: #000000;
+      color-scheme: dark;
       -webkit-text-size-adjust: 100%;
     }
     body {
       font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
       min-height: 100vh; overflow-x: hidden;
-      background: #ffffff; color: #1d1d1f;
-    }
-    @media (prefers-color-scheme: dark) {
-      html, body { background: #000000; color: #f5f5f7; }
+      background: #000000; color: #f5f5f7;
     }
     #app {
       min-height: 100vh; background: var(--bg); color: var(--text);
@@ -355,7 +353,7 @@
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link rel="icon" type="image/png" href="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABQAFADASIAAhEBAxEB/8QAGwABAAIDAQEAAAAAAAAAAAAAAAQGAQUHAgj/xAAwEAABBAEDAQYFAwUAAAAAAAABAAIDBAUGBxEhEhMUFzFBQlJXldIyUVMVFjRidf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD7LREQEREBERAREQEREBERAREQEUPGZTGZTxH9NyNO74aZ1efw87ZO6lb+qN3ZJ7Lhz1B6hTEBFEv5TGY+epXv5GpUmuS9zVjmmax08nHPYYCeXO49hyVLQEREBERAVL3XzuQo4ynp7T0oj1HqCY0sc/jnww45mtEfLFHy79i7sN+JWebL4qJr3S5KlGGAlxdOwBvHrz16Ln22V6lqTOZDcrIXK7G34/B4GKSVoMGNa7kScE9HTvHen37AhB6tKCLYweO2nz2BzOFhFXTdiCDBZlvyEHs1Ljz7u7x5jkeepEzXH9C6vz05Wmz/APbudwd7C5SxRs0b0D69iJ07eHse0hw9enQ+q48/VeQyeCj2ds5pp1KbLsdkckJ2hxxLWhxvB3PR8sLmRA+0z3fIUG8oabpbtPz2qcsZBjLMT8ZpmVh4fXgjkDnXoj7SSTsa9jvkhiPxFXLa3UV3O4GWpnGxxaiw85x+YiYOG9+wAiVo/jlYWSt/1eB6grc46zgsdj6+Po2aFerWibDBDHMwNjY0ANaBz0AAAVD17kaGktYUdw6l+qMfK2PG6jjbM3/HLz3FrjnqYZHkOP8AHK8/AEHUEWGkOAIPIKygIiIKnLtntxLI+SXQGlHveS5znYeuS4n1JPYXnyw21+nukvs1f8FbkQVHyv21+nukvs1f8E8sNteOPL3SfH/Gr/grciCo+V+2v090l9mr/gg2w21Hpt7pL7NX/BW5EGGMbGxrGNDWtHDWgcAD9llEQEREBERAREQEREBERB//2Q==">
-  <meta name="theme-color" id="theme-color-meta" content="#ffffff" />
+  <meta name="theme-color" id="theme-color-meta" content="#000000" />
 </head>
 <body>
 
@@ -363,7 +361,7 @@
   <div class="intro-logo">lyoshb</div>
 </div>
 
-<div id="app" data-theme="light">
+<div id="app" data-theme="dark">
   <div class="blobs">
     <div class="blob blob1"></div>
     <div class="blob blob2"></div>
@@ -379,7 +377,7 @@
         <button class="lang-opt" onclick="setLang('ru',this)">RU</button>
         <button class="lang-opt" onclick="setLang('zh',this)">中文</button>
       </div>
-      <button class="theme-toggle" onclick="toggleTheme()" id="theme-icon" aria-label="Toggle theme">🌙</button>
+      <button class="theme-toggle" onclick="toggleTheme()" id="theme-icon" aria-label="Toggle theme">☀️</button>
     </div>
   </nav>
 
@@ -572,7 +570,7 @@
   }
 
   /* ===== TYPEWRITER ===== */
-  let currentLang = 'en', dark = false;
+  let currentLang = 'en', dark = true;
   let typeTimeout, loopIdx = 0, isDeleting = false, charIdx = 0;
 
   function typeStep() {
@@ -639,6 +637,7 @@
     const bg = dark ? '#000000' : '#ffffff';
     document.documentElement.style.background = bg;
     document.body.style.background = bg;
+    document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
     const old = document.getElementById('theme-color-meta');
     if (old) old.remove();
     const meta = document.createElement('meta');
@@ -662,19 +661,14 @@
     localStorage.setItem('theme_override', newDark ? 'dark' : 'light');
     applyTheme(newDark);
   }
-  /* Определяем тему при загрузке: сначала смотрим ручной выбор, потом систему */
+  /* Определяем тему при загрузке: сначала смотрим ручной выбор, потом тёмная по умолчанию */
   function initTheme() {
     const override = localStorage.getItem('theme_override');
     if (override) {
       applyTheme(override === 'dark');
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      applyTheme(prefersDark);
+      applyTheme(true);
     }
-    /* Следим за изменением системной темы (если нет ручного выбора) */
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('theme_override')) applyTheme(e.matches);
-    });
   }
 
   /* ===== SUBSCRIBE ===== */
