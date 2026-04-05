@@ -317,6 +317,15 @@
       text-align: center; padding: 28px 24px; font-size: 13px; color: var(--text3);
     }
 
+    /* BOTTOM SAFE AREA COVER */
+    #app::after {
+      content: "";
+      position: fixed; bottom: 0; left: 0;
+      width: 100%; height: env(safe-area-inset-bottom, 0px);
+      background: var(--bg);
+      z-index: 9999; pointer-events: none;
+    }
+
     /* MOBILE */
     @media (max-width: 700px) {
       .hero { padding: 60px 0 40px; }
