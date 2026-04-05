@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <meta name="robots" content="index, follow" />
@@ -106,9 +106,9 @@
       background: var(--nav-bg);
       backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
       border-bottom: 0.5px solid var(--border);
-      padding: env(safe-area-inset-top) 24px 0;
+      padding: 0 24px;
       display: flex; align-items: center; justify-content: space-between;
-      height: calc(48px + env(safe-area-inset-top)); opacity: 0; transition: opacity 0.5s ease;
+      height: 48px; opacity: 0; transition: opacity 0.5s ease;
     }
     @media (min-width: 1100px) {
       nav { display: grid; grid-template-columns: 1fr auto 1fr; }
@@ -141,7 +141,7 @@
     /* PAGE */
     #page-wrap { position: relative; z-index: 1; opacity: 0; animation: fadeIn 0.6s ease 3s forwards; }
     @keyframes fadeIn { to { opacity: 1; } }
-    main { max-width: 900px; margin: 0 auto; padding: calc(80px + env(safe-area-inset-top)) 24px 0; }
+    main { max-width: 900px; margin: 0 auto; padding: 80px 24px 0; }
 
     /* HERO */
     .hero { padding: 80px 0 48px; text-align: center; }
@@ -313,7 +313,7 @@
     .subscribe-btn:hover { opacity: 0.88; transform: translateY(-1px); }
 
     footer {
-      text-align: center; padding: 28px 24px calc(28px + env(safe-area-inset-bottom)); font-size: 13px; color: var(--text3);
+      text-align: center; padding: 28px 24px; font-size: 13px; color: var(--text3);
     }
 
     /* MOBILE */
@@ -439,7 +439,7 @@
         </div>
       </div>
     </main>
-    <div style="height: calc(64px + env(safe-area-inset-bottom));"></div>
+    <div style="height: 64px;"></div>
     <footer id="footer">© 2026 Alex Balabanov</footer>
   </div>
 </div>
