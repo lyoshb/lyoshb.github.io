@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <meta name="robots" content="index, follow" />
@@ -56,10 +56,15 @@
       --nl-placeholder: #636366;
     }
 
-    html, body {
+    html {
+      height: 100%;
+      background: #ffffff;
+    }
+    body {
       font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-      min-height: 100vh; overflow-x: hidden;
+      min-height: 100%; overflow-x: hidden;
       background: #ffffff; color: #1d1d1f;
+      padding-bottom: env(safe-area-inset-bottom);
     }
     #app {
       min-height: 100vh; background: var(--bg); color: var(--text);
@@ -433,7 +438,6 @@
         </div>
       </div>
     </main>
-    <div style="height: calc(64px + env(safe-area-inset-bottom));"></div>
     <footer id="footer">© 2026 Alex Balabanov</footer>
   </div>
 </div>
