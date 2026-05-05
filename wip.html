@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f4ff">
+  <title>lyoshb</title>
+  <style>
+    @font-face {
+      font-family: "Bungee";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/bungee.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Fredoka";
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url("fonts/fredoka-600.ttf") format("truetype");
+    }
+    @font-face {
+      font-family: "Monoton";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/monoton.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Pacifico";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/pacifico.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Rubik Dirt";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/rubik-dirt.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Sedgwick Ave Display";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/sedgwick.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Titan One";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/titan-one.woff2") format("woff2");
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      height: 100%;
+      background: #f5f3fb;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100%;
+      min-height: 100dvh;
+      overflow-x: clip;
+      overflow-y: auto;
+      overscroll-behavior-y: none;
+      touch-action: manipulation;
+      color: #111;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+
+      background-color: #faf8ff;
+      background-image:
+        radial-gradient(ellipse 140% 90% at 0% -15%, rgba(255, 183, 213, 0.42), transparent 52%),
+        radial-gradient(ellipse 110% 85% at 100% -8%, rgba(163, 223, 255, 0.45), transparent 48%),
+        radial-gradient(ellipse 130% 70% at 50% 105%, rgba(255, 226, 172, 0.38), transparent 58%),
+        radial-gradient(ellipse 55% 45% at 75% 42%, rgba(199, 183, 255, 0.18), transparent 55%),
+        linear-gradient(165deg, #fffefb 0%, #eef6ff 38%, #fdf8ff 72%, #fff6f3 100%);
+      /* scroll вместо fixed — меньше лагов/крашей на Intel + Safari при многослойных градиентах */
+      background-attachment: scroll;
+    }
+
+    .playground {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      contain: strict;
+      isolation: isolate;
+      background: transparent;
+    }
+
+    /* Лёгкий «туман»: только opacity — без постоянного rotate всего экрана */
+    .playground::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 22% 35%, rgba(255, 140, 190, 0.14), transparent 50%),
+        radial-gradient(ellipse at 82% 28%, rgba(120, 210, 255, 0.15), transparent 48%),
+        radial-gradient(ellipse at 48% 92%, rgba(255, 215, 140, 0.12), transparent 52%);
+      opacity: 0.72;
+      animation: fogPulse 28s ease-in-out infinite alternate;
+    }
+
+    @keyframes fogPulse {
+      from { opacity: 0.52; }
+      to { opacity: 0.88; }
+    }
+
+    /* Движущиеся пятна — маленькие узлы, только transform + blur (композитинг на GPU) */
+    .mesh-spot {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(44px);
+      transform: translateZ(0);
+      opacity: 0.38;
+    }
+
+    .mesh-spot:nth-child(1) {
+      width: min(72vmin, 520px);
+      height: min(72vmin, 520px);
+      left: -18%;
+      top: -10%;
+      background: radial-gradient(circle, rgba(255, 130, 200, 0.85), transparent 68%);
+      animation: meshFloatA 48s ease-in-out infinite;
+    }
+    .mesh-spot:nth-child(2) {
+      width: min(58vmin, 420px);
+      height: min(58vmin, 420px);
+      right: -14%;
+      top: 18%;
+      background: radial-gradient(circle, rgba(120, 235, 230, 0.72), transparent 68%);
+      animation: meshFloatB 56s ease-in-out infinite;
+    }
+    .mesh-spot:nth-child(3) {
+      width: min(88vmin, 620px);
+      height: min(88vmin, 620px);
+      left: 12%;
+      bottom: -28%;
+      background: radial-gradient(circle, rgba(255, 210, 120, 0.55), transparent 68%);
+      animation: meshFloatC 52s ease-in-out infinite;
+    }
+    @keyframes meshFloatA {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(12vw, 8vh, 0) scale(1.08); }
+    }
+    @keyframes meshFloatB {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-10vw, 14vh, 0) scale(1.12); }
+    }
+    @keyframes meshFloatC {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-14vw, -10vh, 0) scale(1.05); }
+    }
+    /* Тонкая сетка только на больших экранах — экономия на телефонах */
+    .playground .fine-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.28;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.65) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.55) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 85% 75% at 50% 42%, black 28%, transparent 72%);
+      animation: gridShift 36s linear infinite;
+    }
+
+    @keyframes gridShift {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(56px, 56px, 0); }
+    }
+
+    .playground .blob {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.42;
+      transform: translateZ(0);
+    }
+
+    .playground .blob:nth-child(5) {
+      width: min(42vw, 380px);
+      height: min(42vw, 380px);
+      left: -8%;
+      top: 12%;
+      background: radial-gradient(circle at 35% 35%, #ff5ea8, #ff2d55 55%, transparent 70%);
+      animation: blobPath1 42s cubic-bezier(0.45, 0, 0.55, 1) infinite, blobOpacity 11s ease-in-out infinite;
+    }
+    .playground .blob:nth-child(6) {
+      width: min(48vw, 420px);
+      height: min(48vw, 420px);
+      right: -12%;
+      top: -6%;
+      background: radial-gradient(circle at 60% 40%, #7cffd8, #00d4aa 50%, transparent 72%);
+      animation: blobPath2 54s cubic-bezier(0.4, 0, 0.2, 1) infinite, blobOpacity 13s ease-in-out infinite reverse;
+    }
+    .playground .blob:nth-child(7) {
+      width: min(55vw, 520px);
+      height: min(55vw, 520px);
+      left: 18%;
+      bottom: -22%;
+      background: radial-gradient(circle at 45% 45%, #ffd93d, #ff9f1c 48%, transparent 75%);
+      animation: blobPath3 46s cubic-bezier(0.5, 0, 0.5, 1) infinite, blobOpacity 15s ease-in-out infinite;
+    }
+    .playground .blob:nth-child(8) {
+      width: min(36vw, 320px);
+      height: min(36vw, 320px);
+      right: 22%;
+      bottom: 14%;
+      background: radial-gradient(circle at 50% 50%, #c9b6ff, #7c5cff 52%, transparent 70%);
+      animation: blobPath4 50s cubic-bezier(0.42, 0, 0.58, 1) infinite, blobOpacity 12s ease-in-out infinite reverse;
+    }
+
+    .playground .geo {
+      position: absolute;
+      opacity: 0.42;
+      transform: translateZ(0);
+    }
+
+    .playground .geo.ring {
+      width: clamp(120px, 22vw, 220px);
+      height: clamp(120px, 22vw, 220px);
+      border: clamp(10px, 2vw, 14px) solid #ff3366;
+      border-radius: 40% 60% 65% 35% / 45% 35% 65% 55%;
+      left: 8%;
+      bottom: 18%;
+      animation: morphRadius 16s ease-in-out infinite;
+    }
+
+    .playground .geo.square {
+      width: clamp(72px, 12vw, 120px);
+      height: clamp(72px, 12vw, 120px);
+      background: linear-gradient(135deg, #00e5ff, #2979ff);
+      border-radius: 22%;
+      right: 12%;
+      top: 38%;
+      animation: squareEpic 32s cubic-bezier(0.5, 0, 0.45, 1) infinite;
+      box-shadow: 12px 18px 0 rgba(255, 107, 203, 0.35);
+    }
+
+    .playground .geo.triangle {
+      width: 0;
+      height: 0;
+      border-left: clamp(38px, 6vw, 56px) solid transparent;
+      border-right: clamp(38px, 6vw, 56px) solid transparent;
+      border-bottom: clamp(64px, 10vw, 96px) solid #00e676;
+      background: transparent;
+      left: 42%;
+      top: 8%;
+      animation: triEpic 26s cubic-bezier(0.42, 0, 0.25, 1) infinite;
+    }
+
+    .playground .geo.star {
+      width: clamp(56px, 9vw, 88px);
+      height: clamp(56px, 9vw, 88px);
+      left: 72%;
+      top: 62%;
+      background: #ffd600;
+      clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+      );
+      opacity: 0.62;
+      animation: starParty 16s ease-in-out infinite;
+    }
+
+    .playground .geo.dot-grid {
+      width: clamp(140px, 22vw, 200px);
+      height: clamp(140px, 22vw, 200px);
+      left: 52%;
+      bottom: 8%;
+      background-image: radial-gradient(#ff4081 35%, transparent 36%);
+      background-size: 18px 18px;
+      border-radius: 50%;
+      opacity: 0.32;
+      animation: dotGridEpic 38s cubic-bezier(0.48, 0, 0.52, 1) infinite;
+    }
+
+    .playground .geo.fallball {
+      width: clamp(48px, 8vw, 76px);
+      height: clamp(48px, 8vw, 76px);
+      left: 28%;
+      top: 10%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.55), #ff3d9a 28%, #b84dff 90%);
+      box-shadow:
+        inset -4px -8px 12px rgba(0, 0, 0, 0.12),
+        8px 14px 0 rgba(255, 100, 50, 0.28);
+      animation: fallballDrop 19s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+
+    @keyframes fallballDrop {
+      0%, 8% { transform: translate3d(0, -140vh, 0) scale(0.4) rotate(0deg); opacity: 0; }
+      12% { opacity: 0.92; }
+      28% { transform: translate3d(0, 62vh, 0) scale(1.18) rotate(240deg); }
+      32% { transform: translate3d(0, 48vh, 0) scale(0.9) rotate(268deg); }
+      37% { transform: translate3d(0, 58vh, 0) scale(1.05) rotate(300deg); }
+      52%, 64% { transform: translate3d(0, 58vh, 0) rotate(322deg); opacity: 0.92; }
+      71% { transform: translate3d(0, -40vh, 0) scale(0.3) rotate(520deg); opacity: 0; }
+      72%, 100% { transform: translate3d(0, -140vh, 0) rotate(620deg); opacity: 0; }
+    }
+
+    @keyframes blobPath1 {
+      0%, 10% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+      38% { transform: translate3d(18%, 14%, 0) scale(1.08) rotate(8deg); }
+      72% { transform: translate3d(130vw, -95vh, 0) scale(0.45) rotate(90deg); }
+      72.001%, 74% { transform: translate3d(-40vw, 120vh, 0) scale(0.2) rotate(-40deg); }
+      100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    }
+    @keyframes blobPath2 {
+      0%, 15% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+      45% { transform: translate3d(-12%, 22%, 0) rotate(-18deg) scale(1.12); }
+      78% { transform: translate3d(-125vw, 80vh, 0) scale(0.4) rotate(120deg); }
+      78.001%, 80% { transform: translate3d(100vw, -110vh, 0) scale(0.15) rotate(-20deg); }
+      100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+    }
+    @keyframes blobPath3 {
+      0%, 8% { transform: translate3d(0, 0, 0) scale(1); }
+      30% { transform: translate3d(-20%, -10%, 0) scale(1.05); }
+      58% { transform: translate3d(-15%, -120vh, 0) scale(0.5) rotate(-25deg); }
+      58.001%, 62% { transform: translate3d(-60vw, 130vh, 0) scale(0.3) rotate(15deg); }
+      100% { transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @keyframes blobPath4 {
+      0%, 20% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-25%, -18%, 0) scale(1.14); }
+      82% { transform: translate3d(120vw, 90vh, 0) scale(0.35) rotate(-70deg); }
+      82.001%, 84% { transform: translate3d(-90vw, -50vh, 0) scale(0.2) rotate(50deg); }
+      100% { transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    @keyframes blobOpacity {
+      0%, 100% { opacity: 0.54; }
+      50% { opacity: 0.78; }
+    }
+
+    @keyframes squareEpic {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(12deg); }
+      50% { transform: translate3d(0, -16px, 0) rotate(-8deg); }
+    }
+
+    @keyframes triEpic {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(-6deg); }
+      50% { transform: translate3d(0, 14px, 0) rotate(10deg); }
+    }
+
+    @keyframes dotGridEpic {
+      0%, 40% { transform: rotate(0deg) translate3d(0, 0, 0); }
+      70% { transform: rotate(180deg) translate3d(0, 24vh, 0); }
+      85%, 100% { transform: rotate(360deg) translate3d(0, 0, 0); }
+    }
+
+    @keyframes morphRadius {
+      0%, 100% { border-radius: 40% 60% 65% 35% / 45% 35% 65% 55%; }
+      50% { border-radius: 62% 38% 42% 58% / 58% 42% 58% 42%; }
+    }
+
+    @keyframes starParty {
+      0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.56; }
+      25% { transform: rotate(90deg) scale(1.12); opacity: 0.74; }
+      50% { transform: rotate(180deg) scale(1); opacity: 0.6; }
+      75% { transform: rotate(270deg) scale(1.08); opacity: 0.78; }
+    }
+
+    .stage {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+        calc(2rem + env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+    }
+
+    .hero {
+      perspective: none;
+      transform-style: preserve-3d;
+      text-align: center;
+      width: 100%;
+      max-width: min(96vw, 1200px);
+    }
+
+    .burst-shell {
+      transform-style: preserve-3d;
+      animation: shellMegaSlam 2s cubic-bezier(0.2, 0.85, 0.12, 1.06) forwards;
+    }
+
+    @keyframes shellMegaSlam {
+      0% { transform: translate3d(0, -135vh, 0) scale(0.12) rotate(-62deg); opacity: 0; }
+      58% { transform: translate3d(0, 32px, 0) scale(1.12) rotate(12deg); opacity: 1; }
+      71% { transform: translate3d(0, -22px, 0) scale(0.92) rotate(-9deg); }
+      82% { transform: translate3d(0, 14px, 0) scale(1.06) rotate(5deg); }
+      92% { transform: translate3d(0, -7px, 0) scale(0.98) rotate(-2deg); }
+      100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    /* На широких — лёгкий 3D; на узких ниже включаем упрощённый orbit */
+    .burst-orbit {
+      display: inline-block;
+      transform-style: preserve-3d;
+      animation: orbitLite 36s cubic-bezier(0.45, 0, 0.55, 1) infinite 2.1s;
+    }
+
+    @keyframes orbitLite {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(-1deg); }
+      50% { transform: translate3d(0, -10px, 0) rotate(4deg); }
+    }
+
+    /* без rotateY/rotateX — дешевле для встроенной графики Intel */
+    @keyframes orbitWide {
+      0%, 100% {
+        transform: translate3d(0, 0, 0) rotateZ(-2deg) skewX(0deg) scale(1);
+      }
+      50% {
+        transform: translate3d(0, -14px, 0) rotateZ(8deg) skewX(-4deg) scale(1.01);
+      }
+    }
+
+    @media (min-width: 701px) {
+      .hero { perspective: none; }
+      .burst-orbit {
+        animation: orbitWide 32s cubic-bezier(0.45, 0, 0.55, 1) infinite 2.1s;
+      }
+    }
+
+    /*
+      Длинный цикл (~3.5 мин): почти всё время — аккуратный ряд lyoshb.
+      Редко: короткая колонка, ещё реже — быстрый лёгкий «разлет» букв.
+    */
+    .burst {
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(0.03em, 1.8vmin, 0.14em);
+      font-size: clamp(2.75rem, 14vmin, 11rem);
+      line-height: 1;
+      font-weight: 400;
+      transform-style: preserve-3d;
+      animation: burstFlow 210s cubic-bezier(0.45, 0, 0.35, 1) infinite;
+    }
+
+    @keyframes burstFlow {
+      0%, 86% {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: clamp(0.03em, 1.8vmin, 0.14em);
+        align-items: center;
+        justify-content: center;
+      }
+      /* Вертикально — читаемо, не «разброс» */
+      88%, 92% {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: clamp(0.05em, 1.6vmin, 0.16em);
+        align-items: center;
+        justify-content: center;
+      }
+      92.1%, 94.2% {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: clamp(0.03em, 1.8vmin, 0.14em);
+        align-items: center;
+        justify-content: center;
+      }
+      94.3%, 100% {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: clamp(0.03em, 1.8vmin, 0.14em);
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .burst-piece {
+      display: inline-block;
+      transform-style: preserve-3d;
+      transform-origin: center center;
+      animation: pieceFormation 210s cubic-bezier(0.45, 0, 0.35, 1) infinite;
+    }
+
+    /* Синхрон с burstFlow: ~92–94% короткий разлет (смягчённый), остальное — 0 */
+    @keyframes pieceFormation {
+      0%, 91.5% {
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+      }
+      92%, 93.6% {
+        transform: translate3d(calc(var(--sx) * 0.42), calc(var(--sy) * 0.42), 0)
+          rotate(calc(var(--sr) * 0.55)) scale(1.05);
+      }
+      94%, 100% {
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+      }
+    }
+
+    .burst-piece:nth-child(1) {
+      --i: 1;
+      --spread: -0.35;
+      --spin: -1;
+      --rz: -9deg;
+      --sx: -42vmin;
+      --sy: -28vmin;
+      --sr: -38deg;
+    }
+    .burst-piece:nth-child(2) {
+      --i: 2;
+      --spread: 0.82;
+      --spin: 1;
+      --rz: 14deg;
+      --sx: 38vmin;
+      --sy: -18vmin;
+      --sr: 42deg;
+    }
+    .burst-piece:nth-child(3) {
+      --i: 3;
+      --spread: -0.92;
+      --spin: -1;
+      --rz: -18deg;
+      --sx: -22vmin;
+      --sy: 32vmin;
+      --sr: -52deg;
+    }
+    .burst-piece:nth-child(4) {
+      --i: 4;
+      --spread: 0.52;
+      --spin: 1;
+      --rz: 22deg;
+      --sx: 46vmin;
+      --sy: 24vmin;
+      --sr: 36deg;
+    }
+    .burst-piece:nth-child(5) {
+      --i: 5;
+      --spread: -0.74;
+      --spin: -1;
+      --rz: -12deg;
+      --sx: -48vmin;
+      --sy: 12vmin;
+      --sr: 28deg;
+    }
+    .burst-piece:nth-child(6) {
+      --i: 6;
+      --spread: 0.61;
+      --spin: 1;
+      --rz: 16deg;
+      --sx: 16vmin;
+      --sy: -36vmin;
+      --sr: -24deg;
+    }
+
+    .burst-letter {
+      display: inline-block;
+      position: relative;
+      transform-origin: center 85%;
+
+      background: linear-gradient(
+        105deg,
+        #ff0080,
+        #7928ca,
+        #0070f3,
+        #00dfd8,
+        #ffd400,
+        #ff4d4d,
+        #ff0080
+      );
+      background-size: 360% 100%;
+      background-position: calc(var(--i, 1) * 8%) 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+
+      --lag: calc((var(--i, 1) - 1) * 0.082s);
+
+      animation:
+        letterRainDown 3.05s cubic-bezier(0.2, 0.96, 0.22, 1.02) forwards,
+        letterGroove 11s cubic-bezier(0.4, 0, 0.25, 1) infinite,
+        rainbowFlow 24s linear infinite,
+        fontDance 34s steps(7, end) infinite,
+        letterGlow 48s ease-in-out infinite alternate;
+
+      animation-delay:
+        var(--lag),
+        calc(var(--lag) + 3.2s),
+        calc(var(--lag) + 3.2s),
+        0s,
+        calc(var(--lag) + 3.2s);
+
+      transform-style: preserve-3d;
+    }
+
+    @keyframes letterRainDown {
+      0% {
+        opacity: 0;
+        transform: translate3d(calc(var(--spread) * 42vw), -125vh, 0)
+          rotateZ(calc(var(--spin) * 92deg)) scaleY(8) scaleX(0.18);
+      }
+      44% { opacity: 1; }
+      48% {
+        transform: translate3d(calc(var(--spread) * 3%), 36px, 0)
+          rotateZ(calc(var(--spin) * -22deg)) scaleY(1) scaleX(1.16);
+      }
+      62% {
+        transform: translate3d(calc(var(--spread) * -6%), -42px, 0)
+          rotateZ(calc(var(--spin) * 14deg)) scale(1.18, 1.05);
+      }
+      74% {
+        transform: translate3d(calc(var(--spread) * 5%), 22px, 0)
+          rotateZ(calc(var(--spin) * -10deg)) scale(0.94, 1.07);
+      }
+      87% {
+        transform: translate3d(calc(var(--spread) * -3%), -14px, 0)
+          rotateZ(calc(var(--spin) * 8deg)) scale(1.05);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotateZ(0deg) scale(1);
+      }
+    }
+
+    @keyframes letterGroove {
+      0%, 100% {
+        transform: translate3d(0, 0, 0) rotateZ(var(--rz, 0deg));
+      }
+      33% {
+        transform: translate3d(0, -8px, 0)
+          rotateZ(calc(var(--rz, 0deg) + 6deg));
+      }
+      66% {
+        transform: translate3d(0, 6px, 0)
+          rotateZ(calc(var(--rz, 0deg) - 8deg));
+      }
+    }
+
+    @keyframes rainbowFlow {
+      from { background-position: 0% 50%; }
+      to { background-position: 360% 50%; }
+    }
+
+    @keyframes fontDance {
+      0% { font-family: "Monoton", fantasy; font-weight: 400; }
+      14% { font-family: "Bungee", fantasy; font-weight: 400; }
+      28% { font-family: "Pacifico", cursive; font-weight: 400; }
+      42% { font-family: "Titan One", fantasy; font-weight: 400; }
+      56% { font-family: "Rubik Dirt", fantasy; font-weight: 400; }
+      71% { font-family: "Sedgwick Ave Display", cursive; font-weight: 400; }
+      85% { font-family: "Fredoka", system-ui, sans-serif; font-weight: 600; }
+      100% { font-family: "Monoton", fantasy; font-weight: 400; }
+    }
+
+    /* Один фильтр — меньше нагрузка, чем пять drop-shadow */
+    @keyframes letterGlow {
+      0%, 100% {
+        filter:
+          saturate(1.25)
+          drop-shadow(4px 5px 0 rgba(255, 0, 140, 0.55))
+          drop-shadow(0 14px 22px rgba(0, 0, 0, 0.07));
+      }
+      50% {
+        filter:
+          saturate(1.4)
+          hue-rotate(35deg)
+          drop-shadow(-4px 6px 0 rgba(0, 180, 255, 0.45))
+          drop-shadow(0 16px 24px rgba(0, 0, 0, 0.06));
+      }
+    }
+
+    .status-note {
+      display: inline-block;
+      margin-top: clamp(0.75rem, 2.8vmin, 1.35rem);
+      padding: 0.55rem 0.9rem;
+      text-align: center;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: clamp(0.66rem, 2.3vmin, 0.88rem);
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(10, 10, 12, 0.86);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow:
+        0 8px 20px rgba(24, 28, 40, 0.08),
+        0 1px 0 rgba(255, 255, 255, 0.7) inset;
+      animation: footerGlow 40s ease-in-out infinite alternate;
+    }
+
+    @keyframes footerGlow {
+      from {
+        text-shadow:
+          0 0 18px rgba(255, 0, 136, 0.22),
+          0 0 36px rgba(0, 200, 255, 0.12);
+      }
+      to {
+        text-shadow:
+          0 0 22px rgba(121, 40, 202, 0.26),
+          0 0 40px rgba(255, 212, 0, 0.16);
+      }
+    }
+
+    @supports not (background-clip: text) {
+      .burst-letter {
+        color: #e91e8c;
+        -webkit-text-fill-color: unset;
+        background: none;
+      }
+    }
+
+    /* Телефоны: меньше декора, проще фильтры и без «тяжёлой» сетки */
+    @media (max-width: 700px) {
+      .playground .fine-grid {
+        display: none;
+      }
+      .mesh-spot {
+        filter: blur(38px);
+        opacity: 0.32;
+      }
+      /* два блоба вместо четырёх — меньше слоёв композита */
+      .playground .blob:nth-child(7),
+      .playground .blob:nth-child(8) {
+        display: none;
+      }
+      .playground .geo.ring,
+      .playground .geo.dot-grid {
+        display: none;
+      }
+      .burst-orbit {
+        animation-duration: 40s;
+      }
+      .burst,
+      .burst-piece {
+        animation-duration: 210s;
+      }
+      .burst-letter {
+        animation:
+          letterRainDown 3.05s cubic-bezier(0.2, 0.96, 0.22, 1.02) forwards,
+          letterGroove 12s cubic-bezier(0.4, 0, 0.25, 1) infinite,
+          rainbowFlow 26s linear infinite,
+          fontDance 36s steps(7, end) infinite,
+          letterGlowLite 60s ease-in-out infinite alternate;
+        animation-delay:
+          var(--lag),
+          calc(var(--lag) + 3.2s),
+          calc(var(--lag) + 3.2s),
+          0s,
+          calc(var(--lag) + 3.2s);
+      }
+      .status-note {
+        margin-top: 0.8rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        padding: 0.5rem 0.75rem;
+        box-shadow: 0 6px 14px rgba(24, 28, 40, 0.06);
+      }
+      @keyframes letterGlowLite {
+        0%, 100% {
+          filter:
+            saturate(1.15)
+            drop-shadow(3px 4px 0 rgba(255, 0, 153, 0.45))
+            drop-shadow(0 10px 16px rgba(0, 0, 0, 0.05));
+        }
+        50% {
+          filter:
+            saturate(1.28)
+            drop-shadow(-3px 5px 0 rgba(0, 160, 255, 0.38))
+            drop-shadow(0 12px 18px rgba(0, 0, 0, 0.04));
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+      }
+      .burst-letter {
+        animation: none !important;
+        transform: none;
+        opacity: 1;
+        filter: none;
+      }
+      .burst-shell,
+      .burst-orbit,
+      .burst-piece {
+        animation: none !important;
+        transform: none;
+      }
+      .burst {
+        animation: none !important;
+        transform: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        justify-content: center;
+      }
+      .mesh-spot,
+      .playground::before,
+      .playground .fine-grid,
+      .playground .blob,
+      .playground .geo {
+        animation: none !important;
+      }
+      .status-note {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="playground" aria-hidden="true">
+    <span class="mesh-spot"></span>
+    <span class="mesh-spot"></span>
+    <span class="mesh-spot"></span>
+    <span class="fine-grid"></span>
+
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+
+    <div class="geo ring"></div>
+    <div class="geo square"></div>
+    <div class="geo triangle"></div>
+    <div class="geo star"></div>
+    <div class="geo dot-grid"></div>
+    <div class="geo fallball"></div>
+  </div>
+
+  <div class="stage">
+    <div class="hero">
+      <div class="burst-shell">
+        <div class="burst-orbit">
+          <h1 class="burst" aria-label="lyoshb">
+            <span class="burst-piece"><span class="burst-letter">l</span></span>
+            <span class="burst-piece"><span class="burst-letter">y</span></span>
+            <span class="burst-piece"><span class="burst-letter">o</span></span>
+            <span class="burst-piece"><span class="burst-letter">s</span></span>
+            <span class="burst-piece"><span class="burst-letter">h</span></span>
+            <span class="burst-piece"><span class="burst-letter">b</span></span>
+          </h1>
+        </div>
+      </div>
+      <p class="status-note">work in progress</p>
+    </div>
+  </div>
+</body>
+</html>
