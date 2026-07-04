@@ -4,206 +4,298 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Say it. It's planned.</title>
-<meta name="description" content="The day planner that listens. One sentence becomes tasks, reminders and time — instantly. Coming to the App Store in 2026." />
+<meta name="description" content="A day planner built around one habit: you talk, it organizes. Tasks, reminders, time — from a single sentence. iOS, 2026." />
 <meta property="og:title" content="Say it. It's planned." />
-<meta property="og:description" content="The day planner that listens. Coming to the App Store in 2026." />
-<meta property="og:image" content="https://lyoshb.github.io/app-dark.png" />
-<meta name="theme-color" content="#000000" />
+<meta property="og:description" content="A day planner built around one habit: you talk, it organizes. iOS, 2026." />
+<meta property="og:image" content="https://lyoshb.github.io/app-light.png" />
+<meta name="theme-color" content="#faf7f2" />
 <style>
   :root {
-    --bg: #000;
-    --surface: #101012;
-    --ink: #f5f5f7;
-    --grey: #86868b;
-    --accent: #7196db;
-    --accent-soft: rgba(113,150,219,0.16);
-    --hairline: rgba(245,245,247,0.12);
+    --paper: #faf7f2;
+    --card: #ffffff;
+    --ink: #1d1a16;
+    --soft: #6b6660;
+    --faint: #a8a29a;
+    --line: #e7e1d8;
+    --blue: #3a5ba0;
+    --blue-soft: #e5ebf7;
+    --green: #3f9e63;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--bg);
+    background: var(--paper);
     color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
   img { max-width: 100%; display: block; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 
-  .wrap { max-width: 1024px; margin: 0 auto; padding: 0 max(24px, env(safe-area-inset-left)); }
+  .serif {
+    font-family: "New York", "Iowan Old Style", "Palatino", "Times New Roman", serif;
+    font-weight: 600; letter-spacing: -0.02em;
+  }
 
-  nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
-  .nav-name { font-size: 14px; color: var(--grey); font-weight: 500; transition: color .25s; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 max(24px, env(safe-area-inset-left)); }
+
+  /* NAV */
+  nav {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 26px 0 0;
+  }
+  .nav-name { font-size: 14px; color: var(--soft); font-weight: 500; }
   .nav-name:hover { color: var(--ink); }
-  .nav-mark { width: 28px; height: 28px; border-radius: 8px; background: #fff; padding: 3px; }
+  nav .right { font-size: 13px; color: var(--faint); font-weight: 500; font-variant-numeric: tabular-nums; }
 
   /* HERO */
-  .hero { text-align: center; padding: clamp(64px, 12vh, 128px) 0 0; }
-  .eyebrow { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 20px; }
-  h1 { font-size: clamp(52px, 11vw, 112px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.03; }
-  h1 .quiet { color: var(--grey); }
-  .lede {
-    max-width: 560px; margin: 28px auto 0;
-    font-size: clamp(17px, 2.6vw, 21px); line-height: 1.5; color: var(--grey); font-weight: 500;
+  .hero { padding: clamp(72px, 13vh, 150px) 0 0; }
+  .hero .over {
+    font-size: 14px; color: var(--soft); font-weight: 500; margin-bottom: 30px;
   }
-  .lede b { color: var(--ink); font-weight: 600; }
+  .hero .over b { color: var(--ink); font-weight: 600; }
+  h1 {
+    font-size: clamp(56px, 10.5vw, 124px);
+    line-height: 0.98;
+  }
+  h1 em {
+    font-style: italic; color: var(--blue);
+  }
+  .hero .sub {
+    max-width: 34em; margin-top: 34px;
+    font-size: clamp(17px, 2.4vw, 20px); line-height: 1.55; color: var(--soft); font-weight: 450;
+  }
+  .hero .sub b { color: var(--ink); font-weight: 600; }
 
-  .shot { display: flex; justify-content: center; align-items: flex-start; gap: clamp(16px, 4vw, 40px); padding: clamp(56px, 10vh, 96px) 0 0; }
+  /* phones — editorial, slightly offset */
+  .plate {
+    margin-top: clamp(60px, 10vh, 110px);
+    display: flex; justify-content: center; align-items: flex-start;
+    gap: clamp(18px, 4vw, 44px);
+  }
   .device {
-    width: clamp(150px, 34vw, 300px);
-    border-radius: clamp(24px, 5vw, 42px);
+    width: clamp(150px, 34vw, 296px);
+    border-radius: clamp(24px, 5vw, 40px);
     overflow: hidden;
-    border: 1px solid rgba(245,245,247,0.14);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 120px rgba(113,150,219,0.07);
+    border: 1px solid var(--line);
+    box-shadow: 0 24px 60px rgba(29,26,22,0.16);
+    background: #fff;
+    will-change: transform;
   }
-  .device.back { margin-top: clamp(28px, 6vw, 64px); opacity: 0.92; }
-
-  /* SECTIONS */
-  section { padding: clamp(96px, 15vh, 152px) 0; border-top: 1px solid var(--hairline); }
-  section.first { border-top: none; }
-  .kicker { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 18px; }
-  h2 { font-size: clamp(34px, 6.2vw, 60px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.06; }
-  .body { margin-top: 22px; font-size: clamp(16px, 2.3vw, 19px); line-height: 1.6; color: var(--grey); font-weight: 500; }
-  .body b { color: var(--ink); font-weight: 600; }
-  .center { text-align: center; }
-  .center h2, .center .body { margin-left: auto; margin-right: auto; }
-  .center .body { max-width: 46ch; }
-
-  /* split layout: copy + live demo */
-  .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 72px); align-items: center; }
-  .split .copy h2 { max-width: 12ch; }
-  .split .copy .body { max-width: 40ch; }
-
-  /* LIVE DEMO — voice becomes a reminder */
-  .demo {
-    background: var(--surface);
-    border: 1px solid var(--hairline);
-    border-radius: 28px;
-    padding: 28px 26px;
-    min-height: 320px;
-    display: flex; flex-direction: column; justify-content: center; gap: 22px;
-    box-shadow: 0 24px 70px rgba(0,0,0,0.5);
-    position: relative; overflow: hidden;
-  }
-  .demo::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(120% 90% at 50% -20%, rgba(113,150,219,0.08), transparent 60%);
+  .device.second { margin-top: clamp(30px, 6vw, 68px); }
+  .plate-cap {
+    text-align: center; margin-top: 26px;
+    font-size: 13px; color: var(--faint); font-style: italic;
+    font-family: "New York", "Iowan Old Style", Georgia, serif;
   }
 
-  .mic-row { display: flex; align-items: center; gap: 14px; }
+  /* CHAPTERS */
+  .chapter { padding: clamp(90px, 14vh, 150px) 0 0; }
+  .rule {
+    display: flex; align-items: baseline; gap: 16px;
+    border-top: 1px solid var(--ink);
+    padding-top: 14px;
+  }
+  .rule .no { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .rule .tag { font-size: 13px; color: var(--soft); font-weight: 500; }
+  h2 {
+    font-size: clamp(36px, 6vw, 62px);
+    line-height: 1.04; margin-top: 34px; max-width: 14ch;
+  }
+  h2 em { font-style: italic; color: var(--blue); }
+  .prose {
+    margin-top: 22px; max-width: 33em;
+    font-size: clamp(16px, 2.2vw, 18.5px); line-height: 1.6; color: var(--soft); font-weight: 450;
+  }
+  .prose b { color: var(--ink); font-weight: 600; }
+  .aside { margin-top: 16px; font-size: 13.5px; color: var(--faint); font-style: italic;
+    font-family: "New York", "Iowan Old Style", Georgia, serif; }
+
+  .duo {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(36px, 6vw, 80px); align-items: center;
+    margin-top: clamp(36px, 6vh, 56px);
+  }
+  .duo.flip { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+
+  /* PAPER CARD */
+  .paper {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    box-shadow: 0 18px 44px rgba(29,26,22,0.09);
+  }
+
+  /* VOICE DEMO */
+  .demo { padding: 26px 24px; display: flex; flex-direction: column; gap: 20px; min-height: 300px; justify-content: center; }
+  .mic-row { display: flex; align-items: center; gap: 13px; }
   .mic {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: var(--accent-soft); color: var(--accent);
-    display: flex; align-items: center; justify-content: center; flex: none;
-    transition: opacity .4s;
+    width: 42px; height: 42px; border-radius: 50%; flex: none;
+    background: var(--ink); color: var(--paper);
+    display: flex; align-items: center; justify-content: center;
   }
-  .mic svg { width: 18px; height: 18px; }
-  .wave { display: flex; align-items: center; gap: 4px; height: 30px; }
-  .wave i {
-    width: 4px; border-radius: 2px; background: var(--accent);
-    height: 8px; animation: wob 1.05s ease-in-out infinite;
-  }
-  .wave i:nth-child(2)  { animation-delay: .10s; }
-  .wave i:nth-child(3)  { animation-delay: .22s; }
-  .wave i:nth-child(4)  { animation-delay: .34s; }
-  .wave i:nth-child(5)  { animation-delay: .05s; }
-  .wave i:nth-child(6)  { animation-delay: .28s; }
-  .wave i:nth-child(7)  { animation-delay: .16s; }
-  .wave i:nth-child(8)  { animation-delay: .40s; }
-  .wave i:nth-child(9)  { animation-delay: .08s; }
+  .mic svg { width: 17px; height: 17px; }
+  .wave { display: flex; align-items: center; gap: 4px; height: 28px; }
+  .wave i { width: 3px; border-radius: 2px; background: var(--ink); height: 7px; animation: wob 1.05s ease-in-out infinite; }
+  .wave i:nth-child(2)  { animation-delay: .10s; } .wave i:nth-child(3)  { animation-delay: .22s; }
+  .wave i:nth-child(4)  { animation-delay: .34s; } .wave i:nth-child(5)  { animation-delay: .05s; }
+  .wave i:nth-child(6)  { animation-delay: .28s; } .wave i:nth-child(7)  { animation-delay: .16s; }
+  .wave i:nth-child(8)  { animation-delay: .40s; } .wave i:nth-child(9)  { animation-delay: .08s; }
   .wave i:nth-child(10) { animation-delay: .30s; }
-  @keyframes wob {
-    0%, 100% { height: 7px; opacity: .55; }
-    50%      { height: 26px; opacity: 1; }
-  }
-  .demo.idle .wave i { animation-play-state: paused; height: 7px; opacity: .35; }
-
+  @keyframes wob { 0%,100% { height: 6px; opacity: .4; } 50% { height: 24px; opacity: 1; } }
+  .demo.idle .wave i { animation-play-state: paused; height: 6px; opacity: .25; }
   .transcript {
-    min-height: 54px;
-    font-size: 17px; line-height: 1.55; font-weight: 500; color: var(--ink);
+    min-height: 58px;
+    font-family: "New York", "Iowan Old Style", Georgia, serif;
+    font-style: italic; font-size: 19px; line-height: 1.5; color: var(--ink);
   }
   .transcript .cursor {
-    display: inline-block; width: 2px; height: 1.05em; margin-left: 2px;
-    background: var(--accent); vertical-align: text-bottom;
-    animation: blink 1s steps(1) infinite;
+    display: inline-block; width: 2px; height: 1em; margin-left: 2px;
+    background: var(--blue); vertical-align: text-bottom; animation: blink 1s steps(1) infinite;
   }
   @keyframes blink { 50% { opacity: 0; } }
-
-  /* the reminder card that "gets created" */
   .result {
-    display: flex; align-items: center; gap: 14px;
-    background: rgba(245,245,247,0.045);
-    border: 1px solid var(--hairline);
-    border-radius: 18px; padding: 15px 16px;
-    opacity: 0; transform: translateY(14px) scale(0.97);
-    transition: opacity .55s cubic-bezier(.22,.61,.36,1), transform .55s cubic-bezier(.34,1.4,.44,1);
+    display: flex; align-items: center; gap: 13px;
+    border: 1px solid var(--line); background: var(--paper);
+    border-radius: 16px; padding: 14px 15px;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.3,1.2,.4,1);
   }
   .demo.done .result { opacity: 1; transform: none; }
   .bell {
-    width: 40px; height: 40px; border-radius: 12px; flex: none;
-    background: var(--accent-soft); color: var(--accent);
+    width: 38px; height: 38px; border-radius: 12px; flex: none;
+    background: var(--blue-soft); color: var(--blue);
     display: flex; align-items: center; justify-content: center;
   }
-  .bell svg { width: 17px; height: 17px; }
-  .result .txt { min-width: 0; }
-  .result .title { font-size: 15.5px; font-weight: 600; letter-spacing: -0.2px; }
-  .result .meta { font-size: 13px; color: var(--grey); margin-top: 3px; font-weight: 500; }
+  .bell svg { width: 16px; height: 16px; }
+  .result .title { font-size: 15px; font-weight: 600; letter-spacing: -0.1px; }
+  .result .meta { font-size: 12.5px; color: var(--soft); margin-top: 2px; font-weight: 500; }
   .set {
-    margin-left: auto; flex: none;
-    font-size: 12px; font-weight: 700;
-    color: var(--accent); background: var(--accent-soft);
-    padding: 6px 11px; border-radius: 100px;
-    opacity: 0; transform: scale(.8);
-    transition: opacity .4s .35s, transform .4s .35s cubic-bezier(.34,1.6,.44,1);
+    margin-left: auto; flex: none; font-size: 11.5px; font-weight: 700;
+    color: var(--blue); background: var(--blue-soft);
+    padding: 5px 10px; border-radius: 100px;
+    opacity: 0; transform: scale(.85);
+    transition: opacity .35s .3s, transform .35s .3s cubic-bezier(.3,1.4,.4,1);
   }
   .demo.done .set { opacity: 1; transform: none; }
 
-  /* SPEC GRID */
-  .specs {
-    margin-top: clamp(48px, 8vh, 72px);
-    display: grid; grid-template-columns: repeat(2, 1fr);
-    border-top: 1px solid var(--hairline);
+  /* CHECKLIST */
+  .try { padding: 22px 24px 18px; }
+  .try-head { display: flex; align-items: baseline; justify-content: space-between; }
+  .try-title { font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--faint); }
+  .try-count { font-size: 12.5px; font-weight: 700; color: var(--soft); font-variant-numeric: tabular-nums; }
+  .try-bar { height: 3px; border-radius: 2px; background: var(--line); overflow: hidden; margin: 10px 0 4px; }
+  .try-bar i { display: block; height: 100%; width: 0; background: var(--ink); transition: width .5s cubic-bezier(.22,.61,.36,1); }
+  .row {
+    display: flex; align-items: center; gap: 13px; width: 100%; text-align: left;
+    padding: 14px 2px; border-bottom: 1px solid var(--line);
+    -webkit-tap-highlight-color: transparent;
   }
-  .spec { padding: 28px 28px 30px 0; border-bottom: 1px solid var(--hairline); }
-  .spec:nth-child(odd) { border-right: 1px solid var(--hairline); }
-  .spec:nth-child(even) { padding-left: 28px; padding-right: 0; }
-  .spec h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.2px; margin-bottom: 8px; }
-  .spec p { font-size: 14.5px; line-height: 1.55; color: var(--grey); font-weight: 500; }
+  .row:last-of-type { border-bottom: none; }
+  .tick {
+    width: 25px; height: 25px; border-radius: 50%; flex: none;
+    border: 1.8px solid var(--faint);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 12px; font-weight: 800;
+    transition: background .22s, border-color .22s, transform .25s cubic-bezier(.3,1.6,.4,1);
+  }
+  .tick span { opacity: 0; transform: scale(.4); transition: opacity .18s, transform .22s cubic-bezier(.3,1.6,.4,1); }
+  .row.done .tick { background: var(--blue); border-color: var(--blue); transform: scale(1.06); }
+  .row.done .tick span { opacity: 1; transform: none; }
+  .row .label { font-size: 15.5px; font-weight: 550; position: relative; transition: color .3s; }
+  .row .label::after {
+    content: ""; position: absolute; left: 0; top: 55%; height: 1.5px; width: 0;
+    background: var(--soft); transition: width .3s cubic-bezier(.22,.61,.36,1);
+  }
+  .row.done .label { color: var(--faint); }
+  .row.done .label::after { width: 100%; }
+  .row .who {
+    margin-left: auto; flex: none; font-size: 12.5px; color: var(--faint);
+    font-style: italic; font-family: "New York", "Iowan Old Style", Georgia, serif;
+  }
+  .fanfare {
+    padding: 12px 2px 6px; text-align: center;
+    font-size: 13.5px; font-weight: 600; color: var(--green);
+    opacity: 0; transform: translateY(4px);
+    transition: opacity .4s, transform .4s cubic-bezier(.3,1.4,.4,1);
+  }
+  .try.alldone .fanfare { opacity: 1; transform: none; }
 
-  /* CTA */
-  .cta { text-align: center; }
-  .cta .mark {
-    width: 72px; height: 72px; border-radius: 20px;
-    background: #fff; padding: 8px; margin: 0 auto 36px;
-    box-shadow: 0 16px 50px rgba(245,245,247,0.12);
+  /* CATEGORY SHELF */
+  .shelf {
+    margin-top: clamp(40px, 7vh, 60px);
+    height: 320px; position: relative; touch-action: none;
   }
-  .cta .body { margin-top: 16px; }
-  .note { margin-top: 36px; font-size: 14px; color: var(--grey); }
-  .note a { color: var(--accent); }
+  .chip {
+    position: absolute; user-select: none; -webkit-user-select: none; cursor: grab;
+    width: 150px; padding: 15px 16px 16px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    box-shadow: 0 10px 26px rgba(29,26,22,0.10);
+    will-change: transform; touch-action: none;
+    transition: box-shadow .25s;
+  }
+  .chip:active { cursor: grabbing; }
+  .chip.drag { box-shadow: 0 26px 50px rgba(29,26,22,0.22); z-index: 5; transition: none; }
+  .chip .swatch { width: 30px; height: 30px; border-radius: 9px; margin-bottom: 10px; position: relative; }
+  .chip .swatch::after {
+    content: ""; position: absolute; inset: 9px;
+    border: 2px solid rgba(255,255,255,0.9); border-radius: 4px;
+  }
+  .chip .name { font-size: 14.5px; font-weight: 650; letter-spacing: -0.15px; }
+  .chip .n { font-size: 12px; color: var(--faint); font-weight: 500; margin-top: 2px; }
+
+  /* FOOTNOTES (specs) */
+  .notes {
+    margin-top: clamp(40px, 7vh, 60px);
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  .note-cell { padding: 24px 28px 26px 0; border-bottom: 1px solid var(--line); }
+  .note-cell:nth-child(odd) { border-right: 1px solid var(--line); }
+  .note-cell:nth-child(even) { padding-left: 28px; padding-right: 0; }
+  .note-cell h3 { font-size: 16px; font-weight: 650; letter-spacing: -0.2px; margin-bottom: 7px; }
+  .note-cell h3 sup { color: var(--blue); font-size: 11px; margin-right: 6px; }
+  .note-cell p { font-size: 14px; line-height: 1.55; color: var(--soft); font-weight: 450; }
+
+  /* CODA */
+  .coda { text-align: center; padding: clamp(100px, 16vh, 170px) 0 clamp(80px, 12vh, 130px); }
+  .coda .mark {
+    width: 68px; height: 68px; border-radius: 18px;
+    background: #fff; border: 1px solid var(--line); padding: 8px; margin: 0 auto 36px;
+    box-shadow: 0 12px 32px rgba(29,26,22,0.12);
+  }
+  .coda h2 { max-width: none; margin-top: 0; }
+  .coda .prose { margin-left: auto; margin-right: auto; text-align: center; }
+  .coda .link { margin-top: 34px; font-size: 14.5px; color: var(--soft); }
+  .coda .link a { color: var(--blue); font-weight: 600; border-bottom: 1px solid rgba(58,91,160,0.35); padding-bottom: 1px; }
 
   footer {
-    border-top: 1px solid var(--hairline);
-    padding: 28px 0 max(40px, env(safe-area-inset-bottom));
-    text-align: center; font-size: 13px; color: var(--grey);
+    border-top: 1px solid var(--line);
+    padding: 26px 0 max(40px, env(safe-area-inset-bottom));
+    display: flex; justify-content: space-between;
+    font-size: 13px; color: var(--faint);
   }
 
-  .rise { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
+  .rise { opacity: 0; transform: translateY(22px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
   .rise.on { opacity: 1; transform: none; }
 
   @media (prefers-reduced-motion: reduce) {
     .rise { opacity: 1; transform: none; transition: none; }
-    .wave i { animation: none; height: 12px; }
+    .wave i { animation: none; height: 11px; }
     .demo .result, .demo .set { opacity: 1 !important; transform: none !important; transition: none; }
     .transcript .cursor { display: none; }
   }
-  @media (max-width: 760px) {
-    .split { grid-template-columns: 1fr; }
-    .split .copy h2, .split .copy .body { max-width: none; }
-    .specs { grid-template-columns: 1fr; }
-    .spec, .spec:nth-child(even) { padding-left: 0; padding-right: 0; border-right: none !important; }
-    .demo { min-height: 280px; }
+  @media (max-width: 780px) {
+    .duo, .duo.flip { grid-template-columns: 1fr; gap: 34px; }
+    h2 { max-width: none; }
+    .notes { grid-template-columns: 1fr; }
+    .note-cell, .note-cell:nth-child(even) { padding-left: 0; padding-right: 0; border-right: none !important; }
+    .shelf { height: 300px; }
+    .chip { width: 132px; padding: 13px 14px; }
+    footer { flex-direction: column; gap: 6px; text-align: center; }
   }
 </style>
 </head>
@@ -211,140 +303,247 @@
 
 <div class="wrap">
   <nav>
-    <a class="nav-name" href="index.html">← Alex Balabanov</a>
-    <div class="nav-mark"><img src="app-icon.png" alt="" /></div>
+    <a class="nav-name" href="index.html">Alex Balabanov</a>
+    <span class="right">iOS · in development</span>
   </nav>
 
+  <!-- HERO -->
   <header class="hero">
-    <p class="eyebrow rise">Coming 2026</p>
-    <h1 class="rise">Say it.<br /><span class="quiet">It's planned.</span></h1>
-    <p class="lede rise">The day planner that listens. One sentence becomes tasks, <b>reminders</b> and time — instantly.</p>
+    <p class="over rise">A one-person app, built in Shanghai. <b>Working title withheld.</b></p>
+    <h1 class="serif rise">Say it.<br /><em>It's planned.</em></h1>
+    <p class="sub rise">A day planner built around one habit: <b>you talk, it organizes</b>. Tasks, reminders, categories and time — from a single spoken sentence.</p>
 
-    <div class="shot">
-      <div class="device rise"><img src="app-dark.png" alt="Home screen — dark" /></div>
-      <div class="device back rise"><img src="app-light.png" alt="Home screen — light" /></div>
+    <div class="plate">
+      <div class="device rise" id="ph1"><img src="app-dark.png" alt="Home screen, dark" /></div>
+      <div class="device second rise" id="ph2"><img src="app-light.png" alt="Home screen, light" /></div>
     </div>
+    <p class="plate-cap rise">The same morning, in ink and in paper.</p>
   </header>
 
-  <section class="first">
-    <div class="split">
-      <div class="copy">
-        <p class="kicker rise">Never forget</p>
-        <h2 class="rise">Remind me to&nbsp;—&nbsp;done.</h2>
-        <p class="body rise">Speak the way you think. The words become a reminder with a real time attached — and it <b>rings when it matters</b>. Forget about forgetting.</p>
+  <!-- 01 VOICE -->
+  <section class="chapter">
+    <div class="rule rise"><span class="no">01</span><span class="tag">Voice</span></div>
+    <div class="duo">
+      <div>
+        <h2 class="serif rise">The keyboard is <em>optional</em>.</h2>
+        <p class="prose rise">Hold the button and say it the way you'd say it to a person — <b>"remind me to send the invoice tomorrow at three"</b>. It becomes a reminder with a real clock time, filed under Work. It rings when it matters.</p>
+        <p class="aside rise">Understands run-on sentences, two errands in one breath, and "in a couple of hours".</p>
       </div>
-
-      <div class="demo idle rise" id="demo" aria-label="Demo: a spoken phrase becomes a reminder">
+      <div class="paper demo idle rise" id="demo" aria-label="Demo: a spoken phrase becomes a reminder">
         <div class="mic-row">
-          <div class="mic">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5a4 4 0 0 0 4 4Zm6-4a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.94V22h2v-3.06A8 8 0 0 0 20 11h-2Z"/></svg>
-          </div>
-          <div class="wave" id="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="mic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5a4 4 0 0 0 4 4Zm6-4a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.94V22h2v-3.06A8 8 0 0 0 20 11h-2Z"/></svg></div>
+          <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </div>
-
         <p class="transcript"><span id="typed"></span><span class="cursor" id="cursor"></span></p>
-
-        <div class="result" id="result">
-          <div class="bell">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm8-6v1H4v-1l2-2v-5a6 6 0 0 1 5-5.92V2h2v1.08A6 6 0 0 1 18 9v5l2 2Z"/></svg>
-          </div>
-          <div class="txt">
+        <div class="result">
+          <div class="bell"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm8-6v1H4v-1l2-2v-5a6 6 0 0 1 5-5.92V2h2v1.08A6 6 0 0 1 18 9v5l2 2Z"/></svg></div>
+          <div>
             <div class="title">Send the invoice</div>
             <div class="meta">Tomorrow · 3:00 PM · Work</div>
           </div>
-          <span class="set">✓ Reminder set</span>
+          <span class="set">Reminder set</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section>
-    <p class="kicker rise">Always on</p>
-    <h2 class="rise">Intelligence that never says no.</h2>
-    <p class="body rise" style="max-width:46ch">Two AI engines — one for the world, one for mainland China — and an on-device parser underneath. Whatever the network thinks, <b>your words become plans</b>.</p>
-
-    <div class="specs">
-      <div class="spec rise">
-        <h3>Live Activity</h3>
-        <p>The next reminder counts down on the Lock Screen and in the Dynamic Island. The app stays in your pocket.</p>
+  <!-- 02 EVERYONE -->
+  <section class="chapter">
+    <div class="rule rise"><span class="no">02</span><span class="tag">For every age</span></div>
+    <div class="duo flip">
+      <div class="paper try rise" id="try">
+        <div class="try-head">
+          <span class="try-title">Try it — tap a circle</span>
+          <span class="try-count"><span id="tryDone">0</span> of 3</span>
+        </div>
+        <div class="try-bar"><i id="tryBar"></i></div>
+        <button class="row" data-row><span class="tick"><span>✓</span></span><span class="label">Water the plants</span><span class="who">grandma's list</span></button>
+        <button class="row" data-row><span class="tick"><span>✓</span></span><span class="label">Finish maths homework</span><span class="who">a kid's list</span></button>
+        <button class="row" data-row><span class="tick"><span>✓</span></span><span class="label">Ship the release</span><span class="who">your list</span></button>
+        <p class="fanfare" id="fanfare">Day complete — the streak lives on.</p>
       </div>
-      <div class="spec rise">
-        <h3>Widgets</h3>
-        <p>Today's plan, a progress ring, the month at a glance. Add by voice straight from the Lock Screen.</p>
-      </div>
-      <div class="spec rise">
-        <h3>Five languages</h3>
-        <p>English, 中文, Русский, Español, Deutsch. Switch in the app — everything follows at once, widgets included.</p>
-      </div>
-      <div class="spec rise">
-        <h3>Private by design</h3>
-        <p>Tasks never leave the device. No analytics. No ads. Delete the app and the data is gone.</p>
+      <div>
+        <h2 class="serif rise">If you can talk, <em>you can plan</em>.</h2>
+        <p class="prose rise">No manuals, no settings maze. One button, big type, colors that mean something. The first minute feels familiar <b>at eight or at eighty</b> — checking things off feels the same as crossing them out on paper.</p>
+        <p class="aside rise">Go on — the circles on the left are real.</p>
       </div>
     </div>
   </section>
 
-  <section class="center">
-    <p class="kicker rise">The craft</p>
-    <h2 class="rise">Ink on paper.<br />In your pocket.</h2>
-    <p class="body rise">A monochrome interface with one reserved accent. Nothing shouts. The loudest thing on screen is <b>your day</b>.</p>
+  <!-- 03 ORDER -->
+  <section class="chapter">
+    <div class="rule rise"><span class="no">03</span><span class="tag">Order</span></div>
+    <h2 class="serif rise">A tidy mind, <em>color-coded</em>.</h2>
+    <p class="prose rise">Every task lands in a category — five built in, the rest are yours to name and color. Voice files things automatically; when nothing fits, it politely invents a new box.</p>
+    <p class="aside rise">These are draggable. In the app they keep themselves in a grid; here they're on a day off.</p>
+
+    <div class="shelf rise" id="shelf">
+      <div class="chip" data-x="4"  data-y="10"><div class="swatch" style="background:#9b59d6"></div><div class="name">Personal</div><div class="n">2 active</div></div>
+      <div class="chip" data-x="28" data-y="52"><div class="swatch" style="background:#4a90d9"></div><div class="name">Work</div><div class="n">3 active</div></div>
+      <div class="chip" data-x="52" data-y="6"><div class="swatch" style="background:#e74c5c"></div><div class="name">Health</div><div class="n">1 active</div></div>
+      <div class="chip" data-x="74" data-y="46"><div class="swatch" style="background:#3f9e63"></div><div class="name">Study</div><div class="n">2 active</div></div>
+      <div class="chip" data-x="40" data-y="76"><div class="swatch" style="background:#f5a623"></div><div class="name">pets</div><div class="n">made by voice</div></div>
+    </div>
   </section>
 
-  <section class="cta">
-    <div class="mark rise"><img src="app-icon.png" alt="App icon" /></div>
-    <h2 class="rise">App Store. 2026.</h2>
-    <p class="body rise">The name? Soon.</p>
-    <p class="note rise"><a href="index.html#nl-title">Get notified</a> when it ships — or just check back here.</p>
+  <!-- 04 DETAILS -->
+  <section class="chapter">
+    <div class="rule rise"><span class="no">04</span><span class="tag">The fine print, proudly</span></div>
+    <h2 class="serif rise">Small things, <em>done properly</em>.</h2>
+
+    <div class="notes">
+      <div class="note-cell rise">
+        <h3><sup>a</sup>Lock Screen countdown</h3>
+        <p>The next reminder lives on the Lock Screen and in the Dynamic Island with a live timer. The phone stays in your pocket.</p>
+      </div>
+      <div class="note-cell rise">
+        <h3><sup>b</sup>Widgets that match</h3>
+        <p>Today's plan, a progress ring, the month at a glance — and one-tap voice capture right from the Lock Screen.</p>
+      </div>
+      <div class="note-cell rise">
+        <h3><sup>c</sup>Five languages, instantly</h3>
+        <p>English, 中文, Русский, Español, Deutsch. Switch inside the app and everything follows at once — widgets included.</p>
+      </div>
+      <div class="note-cell rise">
+        <h3><sup>d</sup>Works in mainland China</h3>
+        <p>Two AI engines routed by reachability, an on-device parser underneath. The voice button never plays dead.</p>
+      </div>
+      <div class="note-cell rise">
+        <h3><sup>e</sup>Private by default</h3>
+        <p>Tasks never leave the device. No analytics, no ads, no account database. Delete the app — the data is gone.</p>
+      </div>
+      <div class="note-cell rise">
+        <h3><sup>f</sup>Quiet by design</h3>
+        <p>Monochrome ink, one reserved accent, a notification chime you won't flinch at. Nothing shouts.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CODA -->
+  <section class="coda">
+    <div class="mark rise"><img src="app-icon.png" alt="App icon — a hand-drawn spiral becoming an arrow" /></div>
+    <h2 class="serif rise">App Store, <em>2026</em>.</h2>
+    <p class="prose rise">The name is the last secret.</p>
+    <p class="link rise"><a href="index.html#nl-title">Leave your email</a> and I'll write when it ships.</p>
   </section>
 </div>
 
-<footer>© 2026 Alex Balabanov</footer>
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;width:100%;padding:0;">
+    <span>© 2026 Alex Balabanov</span>
+    <span><a href="index.html">lyoshb.github.io</a></span>
+  </div>
+</footer>
 
 <script>
-  /* section reveals */
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+(function () {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* reveals */
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.rise').forEach(el => io.observe(el));
 
+  /* gentle hero parallax */
+  const ph1 = document.getElementById('ph1'), ph2 = document.getElementById('ph2');
+  if (!reduce) {
+    addEventListener('scroll', () => requestAnimationFrame(() => {
+      const y = Math.min(scrollY, 900);
+      ph1.style.transform = 'translateY(' + (-y * 0.04) + 'px)';
+      ph2.style.transform = 'translateY(' + (-y * 0.08) + 'px)';
+    }), { passive: true });
+  }
+
   /* voice → reminder loop */
-  (function () {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const demo = document.getElementById('demo');
-    const typed = document.getElementById('typed');
-    const cursor = document.getElementById('cursor');
-    const phrase = '“Remind me to send the invoice tomorrow at three…”';
-
-    if (reduce) { typed.textContent = phrase; demo.classList.remove('idle'); demo.classList.add('done'); return; }
-
-    let timer;
+  const demo = document.getElementById('demo');
+  const typed = document.getElementById('typed');
+  const cursor = document.getElementById('cursor');
+  const phrase = '“Remind me to send the invoice tomorrow at three…”';
+  if (reduce) {
+    typed.textContent = phrase; demo.classList.remove('idle'); demo.classList.add('done');
+  } else {
+    let t;
     function play() {
-      demo.classList.remove('done');
-      demo.classList.add('idle');
-      typed.textContent = '';
-      cursor.style.display = 'inline-block';
-
+      demo.classList.remove('done'); demo.classList.add('idle');
+      typed.textContent = ''; cursor.style.display = 'inline-block';
       setTimeout(() => {
-        demo.classList.remove('idle');            // waveform starts moving
+        demo.classList.remove('idle');
         let i = 0;
-        timer = setInterval(() => {
+        t = setInterval(() => {
           typed.textContent = phrase.slice(0, ++i);
           if (i >= phrase.length) {
-            clearInterval(timer);
-            demo.classList.add('idle');           // voice stops
-            cursor.style.display = 'none';
-            setTimeout(() => demo.classList.add('done'), 550);  // card pops in
-            setTimeout(play, 6200);               // hold, then loop
+            clearInterval(t);
+            demo.classList.add('idle'); cursor.style.display = 'none';
+            setTimeout(() => demo.classList.add('done'), 550);
+            setTimeout(play, 6500);
           }
         }, 46);
       }, 900);
     }
-
-    /* start when the demo scrolls into view */
-    const demoIO = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) { demoIO.disconnect(); play(); }
+    const dio = new IntersectionObserver((es) => {
+      if (es[0].isIntersecting) { dio.disconnect(); play(); }
     }, { threshold: 0.35 });
-    demoIO.observe(demo);
-  })();
+    dio.observe(demo);
+  }
+
+  /* checklist */
+  const tryBox = document.getElementById('try');
+  const rows = [...tryBox.querySelectorAll('[data-row]')];
+  const tryDone = document.getElementById('tryDone');
+  const tryBar = document.getElementById('tryBar');
+  let resetTimer;
+  function refresh() {
+    const done = rows.filter(r => r.classList.contains('done')).length;
+    tryDone.textContent = done;
+    tryBar.style.width = (done / rows.length) * 100 + '%';
+    tryBox.classList.toggle('alldone', done === rows.length);
+    clearTimeout(resetTimer);
+    if (done === rows.length) {
+      resetTimer = setTimeout(() => { rows.forEach(x => x.classList.remove('done')); refresh(); }, 4600);
+    }
+  }
+  rows.forEach(row => row.addEventListener('click', () => {
+    row.classList.toggle('done');
+    refresh();
+  }));
+
+  /* draggable category chips */
+  const shelf = document.getElementById('shelf');
+  const chips = [...shelf.querySelectorAll('.chip')];
+  function place() {
+    const w = shelf.clientWidth, h = shelf.clientHeight;
+    chips.forEach(c => {
+      if (c.dataset.moved) return;
+      c.style.left = (parseFloat(c.dataset.x) / 100 * (w - c.offsetWidth)) + 'px';
+      c.style.top  = (parseFloat(c.dataset.y) / 100 * (h - c.offsetHeight)) + 'px';
+    });
+  }
+  place(); addEventListener('resize', place);
+  chips.forEach(chip => {
+    let sx, sy, ox, oy;
+    chip.addEventListener('pointerdown', (e) => {
+      chip.setPointerCapture(e.pointerId);
+      chip.classList.add('drag');
+      sx = e.clientX; sy = e.clientY;
+      ox = chip.offsetLeft; oy = chip.offsetTop;
+      chip.dataset.moved = '1';
+    });
+    chip.addEventListener('pointermove', (e) => {
+      if (!chip.classList.contains('drag')) return;
+      const nx = Math.max(0, Math.min(shelf.clientWidth - chip.offsetWidth, ox + e.clientX - sx));
+      const ny = Math.max(0, Math.min(shelf.clientHeight - chip.offsetHeight, oy + e.clientY - sy));
+      chip.style.left = nx + 'px'; chip.style.top = ny + 'px';
+      chip.style.transform = 'rotate(-1.5deg) scale(1.04)';
+    });
+    ['pointerup', 'pointercancel'].forEach(ev => chip.addEventListener(ev, () => {
+      chip.classList.remove('drag');
+      chip.style.transition = 'transform .4s cubic-bezier(.3,1.5,.4,1)';
+      chip.style.transform = 'none';
+      setTimeout(() => chip.style.transition = '', 450);
+    }));
+  });
+})();
 </script>
 </body>
 </html>
