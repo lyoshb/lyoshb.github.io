@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Speak. It's planned. — a voice-first day planner</title>
+<meta name="description" content="Say what you need to do — AI turns it into tasks, reminders and categories. Coming to the App Store." />
+<meta property="og:title" content="Speak. It's planned." />
+<meta property="og:description" content="A voice-first day planner. Coming to the App Store in 2026." />
+<meta property="og:image" content="https://lyoshb.github.io/app-dark.png" />
+<style>
+  :root {
+    --bg: #0b0b0d;
+    --bg2: #141417;
+    --ink: #f3efe8;
+    --ink2: #9a948b;
+    --accent: #7196db;
+    --accent-soft: rgba(113,150,219,0.14);
+    --hairline: rgba(243,239,232,0.09);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+  /* ambient glow behind the hero */
+  .halo {
+    position: absolute; top: -240px; left: 50%; transform: translateX(-50%);
+    width: 900px; height: 700px; pointer-events: none;
+    background: radial-gradient(ellipse at center,
+      rgba(113,150,219,0.16) 0%, rgba(113,150,219,0.05) 45%, transparent 70%);
+    filter: blur(10px);
+  }
+
+  header {
+    position: relative;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 0;
+  }
+  .back {
+    font-size: 14px; font-weight: 600; color: var(--ink2);
+    transition: color .2s;
+  }
+  .back:hover { color: var(--ink); }
+  .badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.6px;
+    color: var(--accent); border: 1px solid rgba(113,150,219,0.35);
+    padding: 6px 12px; border-radius: 100px;
+  }
+
+  /* HERO */
+  .hero { position: relative; text-align: center; padding: 72px 0 40px; }
+  .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--ink2); margin-bottom: 22px;
+  }
+  h1 {
+    font-size: clamp(44px, 9vw, 88px);
+    line-height: 1.02; letter-spacing: -2.5px; font-weight: 800;
+  }
+  h1 .accent { color: var(--accent); }
+  .sub {
+    max-width: 560px; margin: 26px auto 0;
+    font-size: clamp(16px, 2.4vw, 19px); line-height: 1.6; color: var(--ink2);
+  }
+  .sub b { color: var(--ink); font-weight: 600; }
+
+  /* PHONES */
+  .stage { position: relative; margin: 70px auto 0; height: min(72vw, 660px); max-width: 760px; }
+  .phone {
+    position: absolute; top: 0;
+    width: min(38vw, 300px); border-radius: 34px;
+    border: 1px solid var(--hairline);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.55);
+    overflow: hidden; background: var(--bg2);
+  }
+  .phone img { width: 100%; display: block; }
+  .phone.dark  { left: 50%; transform: translateX(-88%) rotate(-4deg); z-index: 2; }
+  .phone.light { left: 50%; transform: translateX(-6%) rotate(4deg) translateY(36px); z-index: 1; }
+
+  /* marquee tagline strip */
+  .strip {
+    margin: 90px 0 0; padding: 14px 0; border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    overflow: hidden; white-space: nowrap;
+  }
+  .strip-inner {
+    display: inline-block; animation: slide 28s linear infinite;
+    font-size: 13px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--ink2);
+  }
+  .strip-inner span { margin: 0 26px; }
+  .strip-inner .dot { color: var(--accent); }
+  @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* FEATURES */
+  .features { padding: 90px 0 20px; }
+  h2 {
+    font-size: clamp(28px, 5vw, 42px); letter-spacing: -1.2px;
+    font-weight: 800; text-align: center; margin-bottom: 56px;
+  }
+  h2 .accent { color: var(--accent); }
+  .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  }
+  .cell {
+    background: var(--bg2); border: 1px solid var(--hairline);
+    border-radius: 20px; padding: 26px 22px;
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .cell:hover { transform: translateY(-3px); border-color: rgba(113,150,219,0.4); }
+  .cell .ico {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px; margin-bottom: 16px;
+  }
+  .cell h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .cell p { font-size: 13.5px; line-height: 1.55; color: var(--ink2); }
+
+  /* CTA */
+  .cta { text-align: center; padding: 100px 0 90px; position: relative; }
+  .cta .halo2 {
+    position: absolute; bottom: -160px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 420px; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(113,150,219,0.12) 0%, transparent 70%);
+  }
+  .cta h2 { margin-bottom: 14px; }
+  .cta p { color: var(--ink2); font-size: 15px; margin-bottom: 34px; }
+  .cta .pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent); color: #0b0b0d;
+    font-size: 15px; font-weight: 800; letter-spacing: -0.2px;
+    padding: 15px 28px; border-radius: 100px;
+    box-shadow: 0 12px 40px rgba(113,150,219,0.35);
+  }
+  .cta .hint { display: block; margin-top: 18px; font-size: 12.5px; color: var(--ink2); }
+
+  footer {
+    border-top: 1px solid var(--hairline);
+    padding: 26px 0 40px; text-align: center;
+    font-size: 13px; color: var(--ink2);
+  }
+  footer a { color: var(--accent); font-weight: 600; }
+
+  /* scroll-in animation */
+  .rise { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+  .rise.on { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .strip-inner { animation: none; }
+    .rise { opacity: 1; transform: none; transition: none; }
+  }
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+    .stage { height: 118vw; }
+    .phone { width: 62vw; }
+    .phone.dark  { transform: translateX(-80%) rotate(-4deg); left: 56%; }
+    .phone.light { transform: translateX(-16%) rotate(4deg) translateY(12vw); left: 56%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="halo"></div>
+<div class="wrap">
+  <header>
+    <a class="back" href="index.html">← Alex Balabanov</a>
+    <span class="badge">iOS · 2026</span>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Project № 2 — in development</div>
+    <h1>Speak.<br /><span class="accent">It's planned.</span></h1>
+    <p class="sub">A voice-first day planner. Say <b>"call mom tomorrow at five and buy cat food"</b> — AI splits it into tasks, sets the reminders and files the categories. You just live your day.</p>
+
+    <div class="stage">
+      <div class="phone dark rise"><img src="app-dark.png" alt="Home screen, dark ink theme" /></div>
+      <div class="phone light rise"><img src="app-light.png" alt="Home screen, light paper theme" /></div>
+    </div>
+  </section>
+</div>
+
+<div class="strip">
+  <div class="strip-inner">
+    <span>Voice → tasks</span><span class="dot">●</span>
+    <span>Live countdown on your Lock Screen</span><span class="dot">●</span>
+    <span>Widgets</span><span class="dot">●</span>
+    <span>5 languages</span><span class="dot">●</span>
+    <span>Ink &amp; paper design</span><span class="dot">●</span>
+    <span>Your data stays on your phone</span><span class="dot">●</span>
+    <span>Voice → tasks</span><span class="dot">●</span>
+    <span>Live countdown on your Lock Screen</span><span class="dot">●</span>
+    <span>Widgets</span><span class="dot">●</span>
+    <span>5 languages</span><span class="dot">●</span>
+    <span>Ink &amp; paper design</span><span class="dot">●</span>
+    <span>Your data stays on your phone</span><span class="dot">●</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="features">
+    <h2 class="rise">Built around <span class="accent">one habit</span>: just say it</h2>
+    <div class="grid">
+      <div class="cell rise">
+        <div class="ico">🎙️</div>
+        <h3>Voice in, plan out</h3>
+        <p>Hold, speak, done. AI understands mixed phrases, splits several tasks in one breath and resolves "in a couple hours" into real times.</p>
+      </div>
+      <div class="cell rise">
+        <div class="ico">⚡️</div>
+        <h3>Works everywhere</h3>
+        <p>Dual AI routing — one engine worldwide, another inside mainland China. If both are unreachable, an on-device parser takes over. Never a dead button.</p>
+      </div>
+      <div class="cell rise">
+        <div class="ico">⏳</div>
+        <h3>Live Activity countdown</h3>
+        <p>The next reminder lives on your Lock Screen and Dynamic Island with a live countdown — no need to open the app.</p>
+      </div>
+      <div class="cell rise">
+        <div class="ico">🧩</div>
+        <h3>Widgets that match</h3>
+        <p>Home-screen plan, progress ring, month at a glance, one-tap voice add from the Lock Screen.</p>
+      </div>
+      <div class="cell rise">
+        <div class="ico">🌍</div>
+        <h3>5 languages, instantly</h3>
+        <p>English, 中文, Русский, Español, Deutsch — switch in-app and everything follows at once, widgets included. Voice understands each.</p>
+      </div>
+      <div class="cell rise">
+        <div class="ico">🔒</div>
+        <h3>Private by design</h3>
+        <p>Tasks never leave the device. No analytics, no ads, no account database. Delete the app — the data is gone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="halo2"></div>
+    <h2 class="rise">Coming to the <span class="accent">App Store</span></h2>
+    <p class="rise">2026 · name reveal soon</p>
+    <a class="pill rise" href="index.html#nl-title">Get notified when it ships</a>
+    <span class="hint rise">…or just check back here. I post progress on my socials.</span>
+  </section>
+</div>
+
+<footer>
+  © 2026 Alex Balabanov — <a href="index.html">back to the main page</a>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.rise').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
