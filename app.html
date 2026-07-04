@@ -12,9 +12,11 @@
 <style>
   :root {
     --bg: #000;
+    --surface: #101012;
     --ink: #f5f5f7;
     --grey: #86868b;
     --accent: #7196db;
+    --accent-soft: rgba(113,150,219,0.16);
     --hairline: rgba(245,245,247,0.12);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,42 +34,23 @@
 
   .wrap { max-width: 1024px; margin: 0 auto; padding: 0 max(24px, env(safe-area-inset-left)); }
 
-  /* NAV */
-  nav {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 20px 0;
-  }
-  .nav-name {
-    font-size: 14px; color: var(--grey); font-weight: 500;
-    transition: color .25s;
-  }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+  .nav-name { font-size: 14px; color: var(--grey); font-weight: 500; transition: color .25s; }
   .nav-name:hover { color: var(--ink); }
   .nav-mark { width: 28px; height: 28px; border-radius: 8px; background: #fff; padding: 3px; }
 
   /* HERO */
-  .hero { text-align: center; padding: clamp(72px, 14vh, 140px) 0 0; }
-  .eyebrow {
-    font-size: 14px; font-weight: 600; letter-spacing: 0.2px;
-    color: var(--accent); margin-bottom: 20px;
-  }
-  h1 {
-    font-size: clamp(52px, 11vw, 112px);
-    font-weight: 700; letter-spacing: -0.035em; line-height: 1.03;
-  }
+  .hero { text-align: center; padding: clamp(64px, 12vh, 128px) 0 0; }
+  .eyebrow { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 20px; }
+  h1 { font-size: clamp(52px, 11vw, 112px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.03; }
   h1 .quiet { color: var(--grey); }
   .lede {
-    max-width: 540px; margin: 28px auto 0;
-    font-size: clamp(17px, 2.6vw, 21px); line-height: 1.5;
-    color: var(--grey); font-weight: 500;
+    max-width: 560px; margin: 28px auto 0;
+    font-size: clamp(17px, 2.6vw, 21px); line-height: 1.5; color: var(--grey); font-weight: 500;
   }
   .lede b { color: var(--ink); font-weight: 600; }
 
-  /* PRODUCT SHOT */
-  .shot {
-    display: flex; justify-content: center; align-items: flex-start;
-    gap: clamp(16px, 4vw, 40px);
-    padding: clamp(56px, 10vh, 96px) 0 0;
-  }
+  .shot { display: flex; justify-content: center; align-items: flex-start; gap: clamp(16px, 4vw, 40px); padding: clamp(56px, 10vh, 96px) 0 0; }
   .device {
     width: clamp(150px, 34vw, 300px);
     border-radius: clamp(24px, 5vw, 42px);
@@ -78,54 +61,125 @@
   .device.back { margin-top: clamp(28px, 6vw, 64px); opacity: 0.92; }
 
   /* SECTIONS */
-  section { padding: clamp(96px, 16vh, 160px) 0; border-top: 1px solid var(--hairline); }
+  section { padding: clamp(96px, 15vh, 152px) 0; border-top: 1px solid var(--hairline); }
   section.first { border-top: none; }
-  .kicker {
-    font-size: 14px; font-weight: 600; color: var(--accent);
-    margin-bottom: 18px;
-  }
-  h2 {
-    font-size: clamp(34px, 6.4vw, 64px);
-    font-weight: 700; letter-spacing: -0.03em; line-height: 1.06;
-    max-width: 15ch;
-  }
-  .center { text-align: center; }
-  .center h2 { margin: 0 auto; }
-  .body {
-    margin-top: 24px; max-width: 46ch;
-    font-size: clamp(16px, 2.3vw, 19px); line-height: 1.6;
-    color: var(--grey); font-weight: 500;
-  }
-  .center .body { margin-left: auto; margin-right: auto; }
+  .kicker { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 18px; }
+  h2 { font-size: clamp(34px, 6.2vw, 60px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.06; }
+  .body { margin-top: 22px; font-size: clamp(16px, 2.3vw, 19px); line-height: 1.6; color: var(--grey); font-weight: 500; }
   .body b { color: var(--ink); font-weight: 600; }
+  .center { text-align: center; }
+  .center h2, .center .body { margin-left: auto; margin-right: auto; }
+  .center .body { max-width: 46ch; }
 
-  /* quiet spec list */
+  /* split layout: copy + live demo */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 72px); align-items: center; }
+  .split .copy h2 { max-width: 12ch; }
+  .split .copy .body { max-width: 40ch; }
+
+  /* LIVE DEMO — voice becomes a reminder */
+  .demo {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 28px;
+    padding: 28px 26px;
+    min-height: 320px;
+    display: flex; flex-direction: column; justify-content: center; gap: 22px;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.5);
+    position: relative; overflow: hidden;
+  }
+  .demo::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(120% 90% at 50% -20%, rgba(113,150,219,0.08), transparent 60%);
+  }
+
+  .mic-row { display: flex; align-items: center; gap: 14px; }
+  .mic {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex: none;
+    transition: opacity .4s;
+  }
+  .mic svg { width: 18px; height: 18px; }
+  .wave { display: flex; align-items: center; gap: 4px; height: 30px; }
+  .wave i {
+    width: 4px; border-radius: 2px; background: var(--accent);
+    height: 8px; animation: wob 1.05s ease-in-out infinite;
+  }
+  .wave i:nth-child(2)  { animation-delay: .10s; }
+  .wave i:nth-child(3)  { animation-delay: .22s; }
+  .wave i:nth-child(4)  { animation-delay: .34s; }
+  .wave i:nth-child(5)  { animation-delay: .05s; }
+  .wave i:nth-child(6)  { animation-delay: .28s; }
+  .wave i:nth-child(7)  { animation-delay: .16s; }
+  .wave i:nth-child(8)  { animation-delay: .40s; }
+  .wave i:nth-child(9)  { animation-delay: .08s; }
+  .wave i:nth-child(10) { animation-delay: .30s; }
+  @keyframes wob {
+    0%, 100% { height: 7px; opacity: .55; }
+    50%      { height: 26px; opacity: 1; }
+  }
+  .demo.idle .wave i { animation-play-state: paused; height: 7px; opacity: .35; }
+
+  .transcript {
+    min-height: 54px;
+    font-size: 17px; line-height: 1.55; font-weight: 500; color: var(--ink);
+  }
+  .transcript .cursor {
+    display: inline-block; width: 2px; height: 1.05em; margin-left: 2px;
+    background: var(--accent); vertical-align: text-bottom;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* the reminder card that "gets created" */
+  .result {
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(245,245,247,0.045);
+    border: 1px solid var(--hairline);
+    border-radius: 18px; padding: 15px 16px;
+    opacity: 0; transform: translateY(14px) scale(0.97);
+    transition: opacity .55s cubic-bezier(.22,.61,.36,1), transform .55s cubic-bezier(.34,1.4,.44,1);
+  }
+  .demo.done .result { opacity: 1; transform: none; }
+  .bell {
+    width: 40px; height: 40px; border-radius: 12px; flex: none;
+    background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bell svg { width: 17px; height: 17px; }
+  .result .txt { min-width: 0; }
+  .result .title { font-size: 15.5px; font-weight: 600; letter-spacing: -0.2px; }
+  .result .meta { font-size: 13px; color: var(--grey); margin-top: 3px; font-weight: 500; }
+  .set {
+    margin-left: auto; flex: none;
+    font-size: 12px; font-weight: 700;
+    color: var(--accent); background: var(--accent-soft);
+    padding: 6px 11px; border-radius: 100px;
+    opacity: 0; transform: scale(.8);
+    transition: opacity .4s .35s, transform .4s .35s cubic-bezier(.34,1.6,.44,1);
+  }
+  .demo.done .set { opacity: 1; transform: none; }
+
+  /* SPEC GRID */
   .specs {
     margin-top: clamp(48px, 8vh, 72px);
     display: grid; grid-template-columns: repeat(2, 1fr);
     border-top: 1px solid var(--hairline);
   }
-  .spec {
-    padding: 28px 28px 30px 0;
-    border-bottom: 1px solid var(--hairline);
-  }
+  .spec { padding: 28px 28px 30px 0; border-bottom: 1px solid var(--hairline); }
   .spec:nth-child(odd) { border-right: 1px solid var(--hairline); }
   .spec:nth-child(even) { padding-left: 28px; padding-right: 0; }
-  .spec h3 {
-    font-size: 17px; font-weight: 600; letter-spacing: -0.2px;
-    margin-bottom: 8px;
-  }
+  .spec h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.2px; margin-bottom: 8px; }
   .spec p { font-size: 14.5px; line-height: 1.55; color: var(--grey); font-weight: 500; }
 
   /* CTA */
   .cta { text-align: center; }
-  .cta h2 { max-width: none; }
-  .cta .body { margin-top: 16px; }
   .cta .mark {
     width: 72px; height: 72px; border-radius: 20px;
     background: #fff; padding: 8px; margin: 0 auto 36px;
     box-shadow: 0 16px 50px rgba(245,245,247,0.12);
   }
+  .cta .body { margin-top: 16px; }
   .note { margin-top: 36px; font-size: 14px; color: var(--grey); }
   .note a { color: var(--accent); }
 
@@ -135,17 +189,21 @@
     text-align: center; font-size: 13px; color: var(--grey);
   }
 
-  /* reveal */
   .rise { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
   .rise.on { opacity: 1; transform: none; }
+
   @media (prefers-reduced-motion: reduce) {
     .rise { opacity: 1; transform: none; transition: none; }
+    .wave i { animation: none; height: 12px; }
+    .demo .result, .demo .set { opacity: 1 !important; transform: none !important; transition: none; }
+    .transcript .cursor { display: none; }
   }
-
-  @media (max-width: 640px) {
-    h2 { max-width: none; }
+  @media (max-width: 760px) {
+    .split { grid-template-columns: 1fr; }
+    .split .copy h2, .split .copy .body { max-width: none; }
     .specs { grid-template-columns: 1fr; }
     .spec, .spec:nth-child(even) { padding-left: 0; padding-right: 0; border-right: none !important; }
+    .demo { min-height: 280px; }
   }
 </style>
 </head>
@@ -160,7 +218,7 @@
   <header class="hero">
     <p class="eyebrow rise">Coming 2026</p>
     <h1 class="rise">Say it.<br /><span class="quiet">It's planned.</span></h1>
-    <p class="lede rise">The day planner that listens. One sentence becomes tasks, reminders and time — <b>instantly</b>.</p>
+    <p class="lede rise">The day planner that listens. One sentence becomes tasks, <b>reminders</b> and time — instantly.</p>
 
     <div class="shot">
       <div class="device rise"><img src="app-dark.png" alt="Home screen — dark" /></div>
@@ -169,15 +227,41 @@
   </header>
 
   <section class="first">
-    <p class="kicker rise">Voice first</p>
-    <h2 class="rise">Voice is the interface.</h2>
-    <p class="body rise">Speak the way you think. <b>"Call mom tomorrow at five, and pick up cat food."</b> Two tasks. One reminder. Timed, filed, done — before you put the phone down.</p>
+    <div class="split">
+      <div class="copy">
+        <p class="kicker rise">Never forget</p>
+        <h2 class="rise">Remind me to&nbsp;—&nbsp;done.</h2>
+        <p class="body rise">Speak the way you think. The words become a reminder with a real time attached — and it <b>rings when it matters</b>. Forget about forgetting.</p>
+      </div>
+
+      <div class="demo idle rise" id="demo" aria-label="Demo: a spoken phrase becomes a reminder">
+        <div class="mic-row">
+          <div class="mic">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5a4 4 0 0 0 4 4Zm6-4a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.94V22h2v-3.06A8 8 0 0 0 20 11h-2Z"/></svg>
+          </div>
+          <div class="wave" id="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+
+        <p class="transcript"><span id="typed"></span><span class="cursor" id="cursor"></span></p>
+
+        <div class="result" id="result">
+          <div class="bell">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm8-6v1H4v-1l2-2v-5a6 6 0 0 1 5-5.92V2h2v1.08A6 6 0 0 1 18 9v5l2 2Z"/></svg>
+          </div>
+          <div class="txt">
+            <div class="title">Send the invoice</div>
+            <div class="meta">Tomorrow · 3:00 PM · Work</div>
+          </div>
+          <span class="set">✓ Reminder set</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section>
     <p class="kicker rise">Always on</p>
     <h2 class="rise">Intelligence that never says no.</h2>
-    <p class="body rise">Two AI engines — one for the world, one for mainland China — and an on-device parser underneath. Whatever the network thinks, <b>your words become plans</b>.</p>
+    <p class="body rise" style="max-width:46ch">Two AI engines — one for the world, one for mainland China — and an on-device parser underneath. Whatever the network thinks, <b>your words become plans</b>.</p>
 
     <div class="specs">
       <div class="spec rise">
@@ -216,10 +300,51 @@
 <footer>© 2026 Alex Balabanov</footer>
 
 <script>
+  /* section reveals */
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.rise').forEach(el => io.observe(el));
+
+  /* voice → reminder loop */
+  (function () {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const demo = document.getElementById('demo');
+    const typed = document.getElementById('typed');
+    const cursor = document.getElementById('cursor');
+    const phrase = '“Remind me to send the invoice tomorrow at three…”';
+
+    if (reduce) { typed.textContent = phrase; demo.classList.remove('idle'); demo.classList.add('done'); return; }
+
+    let timer;
+    function play() {
+      demo.classList.remove('done');
+      demo.classList.add('idle');
+      typed.textContent = '';
+      cursor.style.display = 'inline-block';
+
+      setTimeout(() => {
+        demo.classList.remove('idle');            // waveform starts moving
+        let i = 0;
+        timer = setInterval(() => {
+          typed.textContent = phrase.slice(0, ++i);
+          if (i >= phrase.length) {
+            clearInterval(timer);
+            demo.classList.add('idle');           // voice stops
+            cursor.style.display = 'none';
+            setTimeout(() => demo.classList.add('done'), 550);  // card pops in
+            setTimeout(play, 6200);               // hold, then loop
+          }
+        }, 46);
+      }, 900);
+    }
+
+    /* start when the demo scrolls into view */
+    const demoIO = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) { demoIO.disconnect(); play(); }
+    }, { threshold: 0.35 });
+    demoIO.observe(demo);
+  })();
 </script>
 </body>
 </html>
