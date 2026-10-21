@@ -418,9 +418,17 @@
       <div class="projects-section">
         <div class="projects-header">
           <span class="projects-title" id="projects-label">Projects</span>
-          <span class="projects-count">— 2</span>
+          <span class="projects-count">— 5</span>
         </div>
         <div class="projects-grid">
+          <a href="https://notchisland.onrender.com/" class="project-card" target="_blank" rel="noopener noreferrer">
+            <div class="project-top">
+              <div class="project-icon" style="display:grid;place-items:center;"><svg viewBox="16 16 192 176" width="30" height="28" aria-hidden="true"><defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9AA6FF"/><stop offset="1" stop-color="#7073F2"/></linearGradient></defs><path fill="url(#pg)" d="M80.5 75.7C67 67 47 54 49.5 42C50.5 32 57.5 26 66.5 30C82 34 89 56 92 74C108 72 125 74 137.5 80C142 65 150 48 164.5 44C178 38.5 191 43 191 54.5C192 68 174 78 151 89C164 104 174 123 174 138C175 158 160 172 140 174C118 177 99 164 84 160C74 157 62 157 51 153C38 148 30 137 32.5 121C36 99 55 82 80.5 75.7Z"/><ellipse cx="82" cy="107" rx="4.6" ry="11.2" fill="#1F3045"/><ellipse cx="121.5" cy="106" rx="4.6" ry="11.2" fill="#1F3045"/></svg></div>
+              <div class="project-name">Globby</div>
+            </div>
+            <div class="project-desc" id="globby-desc">A language-learning assistant that lives in the MacBook notch. Select a word in any app to see its translation.</div>
+            <span class="project-tag live" id="globby-tag">Beta</span>
+          </a>
           <a href="https://t.me/lavacat_bot" class="project-card" target="_blank" rel="noopener noreferrer">
             <div class="project-top">
               <div class="project-icon"><img src="lava.jpeg" /></div>
@@ -428,6 +436,22 @@
             </div>
             <div class="project-desc" id="lava-desc">Start your morning with everything you need — powered by AI, delivered via Telegram.</div>
             <span class="project-tag wip" id="lava-tag">Out of service</span>
+          </a>
+          <div class="project-card" style="cursor:default">
+            <div class="project-top">
+              <div class="project-icon" style="font-size:19px;display:grid;place-items:center;">🧰</div>
+              <div class="project-name">HelperHand</div>
+            </div>
+            <div class="project-desc" id="hh-desc">A Roblox Studio assistant that builds and playtests game ideas from sketches and short briefs.</div>
+            <span class="project-tag wip" id="hh-tag">Private beta</span>
+          </div>
+          <a href="https://github.com/lyoshb/ai-disclosure-paper" class="project-card" target="_blank" rel="noopener noreferrer">
+            <div class="project-top">
+              <div class="project-icon" style="font-size:19px;display:grid;place-items:center;">📄</div>
+              <div class="project-name" id="paper-name">AI disclosure paper</div>
+            </div>
+            <div class="project-desc" id="paper-desc">Research on why company talk about AI is a weak measure of real AI adoption. Code and data on GitHub.</div>
+            <span class="project-tag live" id="paper-tag">Research</span>
           </a>
           <a href="app.html" class="project-card">
             <div class="project-top">
@@ -453,6 +477,9 @@
       subBtn: "Sign up", projectsLabel: "Projects",
       lavaDesc: "Start your morning with everything you need — powered by AI, delivered via Telegram.", lavaTag: "Out of service",
       startupName: "Say it. It's planned.", startupDesc: "A voice-first day planner for iOS — say it, AI turns it into tasks. Name reveal soon.", startupTag: "In development",
+      globbyDesc: "A language-learning assistant that lives in the MacBook notch. Select a word in any app to see its translation.", globbyTag: "Beta",
+      hhDesc: "A Roblox Studio assistant that builds and playtests game ideas from sketches and short briefs.", hhTag: "Private beta",
+      paperName: "AI disclosure paper", paperDesc: "Research on why company talk about AI is a weak measure of real AI adoption. Code and data on GitHub.", paperTag: "Research",
       footer: "© 2026 Alex Balabanov", emailPh: "your@email.com",
       loopTexts: ["Based in Shanghai",
   "Sharing what I learn as I go",
@@ -465,6 +492,9 @@
       nlTitle: "Будь в курсе", nlDesc: "Я делюсь тем, что происходит в моей жизни — тем, чему я учусь, что пробую и в чём разбираюсь по ходу.",
       subBtn: "Подписаться", projectsLabel: "Проекты",
       lavaDesc: "Всё, что нужно для начала утра — с помощью ИИ, прямо в Telegram.", lavaTag: "Временно недоступен",
+      globbyDesc: "Помощник для изучения языков, который живёт в «чёлке» MacBook. Выделите слово в любой программе и увидите перевод.", globbyTag: "Бета",
+      hhDesc: "Помощник для Roblox Studio: собирает и тестирует игровые идеи по наброскам и коротким описаниям.", hhTag: "Закрытая бета",
+      paperName: "Статья о раскрытии ИИ", paperDesc: "Исследование о том, почему разговоры компаний про ИИ плохо показывают, насколько они его реально используют. Код и данные на GitHub.", paperTag: "Исследование",
       startupName: "Скажи — и готово.", startupDesc: "Голосовой планировщик дня для iOS: скажи, что нужно, — ИИ превратит это в задачи. Имя объявим скоро.", startupTag: "В разработке",
       footer: "© 2026 Алексей Балабанов", emailPh: "ваш@email.com",
       loopTexts: ["Живу в Шанхае",
@@ -478,6 +508,9 @@
       nlTitle: "订阅我的动态", nlDesc: "我分享我生活中正在发生的事情——我在学习、尝试，以及一路上不断摸索的过程。",
       subBtn: "订阅", projectsLabel: "我的项目",
       lavaDesc: "开启早晨所需的一切——AI驱动，直接在Telegram里。", lavaTag: "暂停服务",
+      globbyDesc: "住在 MacBook 刘海里的语言学习助手。在任何应用里选中一个词，就能看到翻译。", globbyTag: "内测",
+      hhDesc: "Roblox Studio 助手：根据草图和简短描述搭建并试玩游戏创意。", hhTag: "内测中",
+      paperName: "AI 披露研究", paperDesc: "研究公司谈论 AI 为什么不能很好地衡量真实的 AI 使用情况。代码和数据在 GitHub 上。", paperTag: "研究",
       startupName: "说出来，就安排好了。", startupDesc: "iOS 语音优先的日程规划应用——说出要做的事，AI 自动生成任务。名字即将揭晓。", startupTag: "开发中",
       footer: "© 2026 Alex Balabanov", emailPh: "你的@邮箱.com",
       loopTexts: ["常驻上海","分享我一路学习的过程","独立打造一切","自律胜过动力","更多内容在我的社交平台"]
@@ -614,6 +647,13 @@
     document.getElementById('lava-desc').textContent       = d.lavaDesc;
     document.getElementById('lava-tag').textContent        = d.lavaTag;
     document.getElementById('startup-name').textContent    = d.startupName;
+    document.getElementById('globby-desc').textContent     = d.globbyDesc;
+    document.getElementById('globby-tag').textContent      = d.globbyTag;
+    document.getElementById('hh-desc').textContent         = d.hhDesc;
+    document.getElementById('hh-tag').textContent          = d.hhTag;
+    document.getElementById('paper-name').textContent      = d.paperName;
+    document.getElementById('paper-desc').textContent      = d.paperDesc;
+    document.getElementById('paper-tag').textContent       = d.paperTag;
     document.getElementById('startup-desc').textContent    = d.startupDesc;
     document.getElementById('startup-tag').textContent     = d.startupTag;
     document.getElementById('footer').textContent          = d.footer;
